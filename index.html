@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <title>Démo TFE - Cascou grimpeur</title>
+      <!-- Méta Google -->
+      <meta name="title" content="Cascou grimpeur" />
+      <meta name="description"
+            content="Cascou grimpeur est un jeu vidéo à défilement horizontal développé par moi-même, Corentin Villemus dans le cadre de mon travail de fin d'études. Le but est de parcourir la plus longue distance avec votre mascotte, attention à ne pas prendre la confiance." />
+      
+      <!-- Métas Facebook Opengraph -->
+      <meta property="og:title" content="Cascou grimpeur" />
+      <meta property="og:description"
+            content="Cascou grimpeur est un jeu vidéo à défilement horizontal développé par moi-même, Corentin Villemus dans le cadre de mon travail de fin d'études. Le but est de parcourir la plus longue distance avec votre mascotte, attention à ne pas prendre la confiance." />
+      <meta property="og:url" content="http://corentinvillemus.com/projets/tfe/mvp/index.html" />
+      <meta property="og:image" content="http://corentinvillemus.com/projets/tfe/mvp/custom/ccgp.png" />
+      <meta property="og:type" content="website" />
+      
+      <!-- Métas Twitter Card -->
+      <meta name="twitter:title" content="Cascou grimpeur" />
+      <meta name="twitter:description"
+            content="Cascou grimpeur est un jeu vidéo à défilement horizontal développé par moi-même, Corentin Villemus dans le cadre de mon travail de fin d'études. Le but est de parcourir la plus longue distance avec votre mascotte, attention à ne pas prendre la confiance." />
+      <meta name="twitter:url" content="http://corentinvillemus.com/projets/tfe/mvp/index.html" />
+      <meta name="twitter:image" content="http://corentinvillemus.com/projets/tfe/mvp/custom/ccgp.png" />
+
+
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+      <script src="//cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.min.js"></script>
+      
+</head>
+<body>
+      <div id="onBoarding" class="box box--onboarding box--center">
+            <h2>bienvenue cascou !</h2>
+            <img src="custom/gifOnboarding.gif" alt="demoGameplay" class="onboarding-img"/>
+            <p>Pour effectuer un saut, place ton curseur sur le personnage et maintient le click</p>
+            <p>Pour s'agriper à une prise, maintenez le click sur votre joueur quand celui-ci survole la prise</p>
+            <p>N'oubliez pas le son !</p>
+            <div class="tac">
+                  <button class="btn btn--prev">Fermer</button>
+            </div>
+      </div>
+
+      <button id="buttonGamePause" class="btn btn--pause">Pause</button>
+      <div class="box box--center box--lose dn" id="loseBox">
+            <h2>You lose !</h2>
+            <!-- <p>You died from: <span id="containerDeadOrigin"></span></p> -->
+            <p>Score:<span id="containerActualScore">1</span></p>
+            <p>Best:<span id="containerBestScore">1</span><span class="txt-best-score" id="containerBestScoreMessage"></span></p>
+            <div class="tac">
+                  <button id="buttonGameRetry" class="btn btn--restart">Restart</button>
+            </div>
+      </div>
+      <script src="game.js"></script>
+</body>
+</html>
