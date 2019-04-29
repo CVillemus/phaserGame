@@ -5,9 +5,6 @@ window.onload = function () {
             height: window.innerHeight
       }
 
-      
-
-
       var config = {
             type: Phaser.AUTO,
             parent: 'phaser-example',
@@ -135,9 +132,9 @@ window.onload = function () {
             this.load.image('platform', 'custom/platform.png');
 
             this.load.image('topImage', 'custom/top.png');
-            this.load.image('rightImage', 'custom/left.png');
+            // this.load.image('rightImage', 'custom/left.png');
             this.load.image('botImage', 'custom/bottom.png');
-            this.load.image('leftImage', 'custom/right.png');
+            // this.load.image('leftImage', 'custom/right.png');
             this.load.image('centerImage', 'custom/center.png');
 
             this.load.image('bgCenter', 'custom/fullW.png');
