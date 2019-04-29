@@ -5,6 +5,8 @@ window.onload = function () {
             height: window.innerHeight
       }
 
+      
+
 
       var config = {
             type: Phaser.AUTO,
@@ -16,7 +18,7 @@ window.onload = function () {
             physics: {
                   default: 'arcade',
                   arcade: {
-                        debug: false
+                        debug: true
                   }
             },
             scene: {
@@ -51,13 +53,12 @@ window.onload = function () {
       var scoreText;
       var scoreValue;
 
-
       var camera;
 
       // Joueur
       var player;
       var isSuspended;
-      var isUnderRock;
+      // var isUnderRock;
       var playerConfig = {};
 
 
@@ -91,7 +92,23 @@ window.onload = function () {
 
       var isPause = false;
       var isHulk = false;
-      var collideToRock;
+      // var collideToRock;
+
+      const center = screenSize.width / 2;
+      
+      const randomWidth = [
+            center - 250,
+            center - 200,
+            center - 150,
+            center - 100,
+            center - 50,
+            center,
+            center + 50,
+            center + 100,
+            center + 150,
+            center + 200,
+            center + 250
+      ]
 
       initPlayer();
 
@@ -101,7 +118,6 @@ window.onload = function () {
                   boost: '',
             };
       }
-
       var highElements = [];
 
       function preload() {
@@ -125,7 +141,7 @@ window.onload = function () {
             this.load.image('centerImage', 'custom/center.png');
 
             this.load.image('bgCenter', 'custom/fullW.png');
-            this.load.image('obstacle', 'custom/obstacleRock.png');
+            // this.load.image('obstacle', 'custom/obstacleRock.png');
             this.load.image('bonusHulk', 'custom/bonusHulk2.png');
             // audio
             this.load.audio('Catch1', ['custom/sound/player' + playerConfig.skin + 'Catch1.ogg', 'custom/sound/player' + playerConfig.skin + 'Catch1.mp3']);
@@ -140,6 +156,7 @@ window.onload = function () {
 
 
       function create() {
+
             initPlayer();
             deadSoundProgress = false;
 
@@ -152,20 +169,19 @@ window.onload = function () {
 
             globaliseThis = this;
             camera = this.cameras.main;
-            center = window.innerWidth / 2 + 50;
 
             isSuspended = false;
-            isUnderRock = false;
+            // isUnderRock = false;
 
             isOver = false;
             isflying = false;
 
-            bgCenter = this.add.sprite(window.innerWidth / 2 - 1100, window.innerHeight, 'bgCenter');
+            bgCenter = this.add.sprite(center - 1100, window.innerHeight, 'bgCenter');
 
             // Background repeat
-            up = this.add.sprite(window.innerWidth / 2 + 50, window.innerHeight - 1300, 'topImage');
-            bot = this.add.sprite(window.innerWidth / 2 + 50, window.innerHeight - 2600, 'botImage');
-            middle = this.add.sprite(window.innerWidth / 2 + 50, window.innerHeight, 'centerImage');
+            up = this.add.sprite(center + 50, window.innerHeight - 1300, 'topImage');
+            bot = this.add.sprite(center + 50, window.innerHeight - 2600, 'botImage');
+            middle = this.add.sprite(center + 50, window.innerHeight, 'centerImage');
             highElements.push(up, bot, middle);
 
             // Init songs
@@ -177,28 +193,40 @@ window.onload = function () {
             crackNeck = this.sound.add('crackNeck');
             hulkJump = this.sound.add('JumpBonusHulk');
 
-            // Prepare platforms
-            platformGroup = this.physics.add.staticGroup();
-            for (var i = 1; i < screenSize.height + 300; i += 100) {
+            
 
-                  var randomWidth = Phaser.Math.Between(center - 300, center + 300);
-                  var randomHeight = Phaser.Math.Between((screenSize.height - i) - 50, (screenSize.height - i) + 50);
-                  platformGroup.create(randomWidth, randomHeight, 'platform'); //.setScale(Phaser.Math.Between(700, 1000) / 1000).refreshBody();  
+            // Génération prises
+
+            
+            
+            platformGroup = this.physics.add.staticGroup();
+            for (let i = 70; i < screenSize.height; i += 75) {
+                  let pickWidth = Phaser.Math.Between(0, randomWidth.length - 1);
+                  console.log(randomWidth[pickWidth]);
+                  let randomHeight = screenSize.height - i - 15; // var randomHeight = Phaser.Math.Between((screenSize.height - i) - 50, (screenSize.height - i) + 50);
+                  platformGroup.create(randomWidth[pickWidth], randomHeight, 'platform'); //.setScale(Phaser.Math.Between(700, 1000) / 1000).refreshBody();  
             }
             platformElements = platformGroup.getChildren();
 
+            // Update plateformes
+            
+
+
+
+            
+
             // Init player
-            player = this.physics.add.sprite(window.innerWidth / 2 + 50, window.innerHeight, 'playerTop').setScale(0.4).setInteractive();;
+            player = this.physics.add.sprite(window.innerWidth / 2 + 50, window.innerHeight, 'playerTop').setScale(0.2).setInteractive();;
 
             // Obstacles
-            obstacleGroup = this.physics.add.staticGroup();
+            // obstacleGroup = this.physics.add.staticGroup();
 
-            obstacleGroup.create(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(-1300, -2000), 'obstacle').setScale(0.8).setCircle(100).refreshBody();
-            obstacleGroup.create(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(-2600, -4000), 'obstacle').setScale(0.4).setCircle(45).refreshBody();
-            obstacleGroup.create(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(-4000, -6000), 'obstacle').setScale(0.6).setCircle(60).refreshBody();
+            // obstacleGroup.create(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(-1300, -2000), 'obstacle').setScale(0.8).setCircle(100).refreshBody();
+            // obstacleGroup.create(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(-2600, -4000), 'obstacle').setScale(0.4).setCircle(45).refreshBody();
+            // obstacleGroup.create(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(-4000, -6000), 'obstacle').setScale(0.6).setCircle(60).refreshBody();
 
-            obstacleElements = obstacleGroup.getChildren();
-            collideToRock = this.physics.add.collider(player, obstacleGroup, hitRock);
+            // obstacleElements = obstacleGroup.getChildren();
+            // collideToRock = this.physics.add.collider(player, obstacleGroup, hitRock);
 
             // bonus
             bonusGroup = this.physics.add.staticGroup();
@@ -248,7 +276,7 @@ window.onload = function () {
                         player.setTexture('playerGrab');
                         // globaliseThis.physics.world.removeCollider(isUnderRock);
                         if (isHulk == true){
-                              collideToRock = this.physics.add.collider(player, obstacleGroup, hitRock);
+                              // collideToRock = this.physics.add.collider(player, obstacleGroup, hitRock);
                         }
                         isHulk = false;
                   } else {
@@ -391,7 +419,7 @@ window.onload = function () {
 
       giveHulk = function (gameObject1, gameObject2) {
             isHulk = true;
-            globaliseThis.physics.world.removeCollider(collideToRock);
+            // globaliseThis.physics.world.removeCollider(collideToRock);
 
             bonusGroup.kill(gameObject2);
             player.setTexture('playerHulkTop');
@@ -401,20 +429,20 @@ window.onload = function () {
             bonusLastDead.setActive(true);
       }
 
-      killRock = function (gameObject1, gameObject2){
-            gameObject2.destroy();
-      }
+      // killRock = function (gameObject1, gameObject2){
+      //       gameObject2.destroy();
+      // }
 
 
 
-      hitRock = function (gameObject1, gameObject2) {
-            if (isHulk == true ) {
-                  gameObject2.destroy();
-            } else {
-                  crackNeck.play();
-                  isOver = true;
-            }
-      }
+      // hitRock = function (gameObject1, gameObject2) {
+      //       if (isHulk == true ) {
+      //             gameObject2.destroy();
+      //       } else {
+      //             crackNeck.play();
+      //             isOver = true;
+      //       }
+      // }
 
       function update() {
             // Centrer la camera sur le joueur en permanence
@@ -447,30 +475,31 @@ window.onload = function () {
                   }
             });
 
-            // Update plateformes
             platformElements.forEach(ele => {
                   // Si: Position prise dépasse la caméra de 300 px
-                  if (ele.y - 300 > camera.scrollY + screenSize.height) {
+                  if (ele.y > camera.scrollY + screenSize.height) {
                         platformGroup.kill(ele);
                         platformLastDead = platformGroup.getFirstDead();
-                        // Repositionnement de la prise
-                        platformLastDead.body.reset(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(camera.scrollY - 70, camera.scrollY));
+                        let pickWidth = Phaser.Math.Between(0, randomWidth.length);
+                        platformLastDead.body.reset(randomWidth[pickWidth], camera.scrollY - 75);
                         platformLastDead.setActive(true);
                   }
             });
 
+            
+
             // Update obstacle
-            var obstacleDead;
-            obstacleElements.forEach(ele => {
-                  if (ele.y - 300 > camera.scrollY + screenSize.height) {
-                        obstacleGroup.kill(ele);
-                        obstacleDead = platformGroup.getFirstDead();
-                        ele.body.reset(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(camera.scrollY - 700, camera.scrollY - 2200));
-                        ele.setActive(true);
+            // var obstacleDead;
+            // obstacleElements.forEach(ele => {
+            //       if (ele.y - 300 > camera.scrollY + screenSize.height) {
+            //             obstacleGroup.kill(ele);
+            //             obstacleDead = platformGroup.getFirstDead();
+            //             ele.body.reset(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(camera.scrollY - 700, camera.scrollY - 2200));
+            //             ele.setActive(true);
 
-                  }
+            //       }
 
-            });
+            // });
 
             // Update fond de grimpe
             highElements.forEach(ele => {
@@ -488,7 +517,7 @@ window.onload = function () {
                         isOver = false;
                         deadSoundProgress = true;
                   }
-                  this.time.delayedCall(1500, youDie, [], this);
+                  this.time.delayedCall(1500, gameOver, [], this);
             }
             if(isOver){
                   if (deadSoundProgress == false){
@@ -496,24 +525,24 @@ window.onload = function () {
                         deadSoundProgress = true;
                         // crackNeck.play();
                   } 
-                  this.time.delayedCall(1500, youDie, [], this);
+                  this.time.delayedCall(1500, gameOver, [], this);
             }
 
             // overlaps
             this.physics.world.overlap(player, bonusGroup, giveHulk);
             isSuspended = this.physics.world.overlap(player, platformGroup);
-            isUnderRock = this.physics.world.overlap(player, obstacleGroup, killRock);
+            // isUnderRock = this.physics.world.overlap(player, obstacleGroup, killRock);
             
 
       }
 
       // Pause + Lance les actions sous-jacentes
-      function youDie() {
+      gameOver = function () {
             globaliseThis.scene.pause();
             showDeadMenue();
-
       }
 
+      
       // Ouvre la box de mort
       function showDeadMenue() {
             dom.loseBox.classList.remove("dn");
