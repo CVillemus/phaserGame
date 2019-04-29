@@ -72,9 +72,9 @@ window.onload = function () {
       var obstacleGroup;
       var obstacleElements;
 
-      var bonusGroup;
-      var bonusElements;
-      var hasHulk;
+      // var bonusGroup;
+      // var bonusElements;
+      // var hasHulk;
 
       // Sounds
       var catch1;
@@ -91,7 +91,7 @@ window.onload = function () {
       var globaliseThis;
 
       var isPause = false;
-      var isHulk = false;
+      // var isHulk = false;
       // var collideToRock;
 
       const center = screenSize.width / 2;
@@ -127,10 +127,10 @@ window.onload = function () {
             this.load.image('playerLeft', 'custom/player' + playerConfig.skin + 'Left.png');
             this.load.image('playerGrab', 'custom/player' + playerConfig.skin + 'Grab.png');
 
-            this.load.image('playerHulkTop', 'custom/playerHulkTop.png');
-            this.load.image('playerHulkRight', 'custom/playerHulkRight.png');
-            this.load.image('playerHulkLeft', 'custom/playerHulkLeft.png');
-            this.load.image('playerHulkGrab', 'custom/playerHulkGrab.png');
+            // this.load.image('playerHulkTop', 'custom/playerHulkTop.png');
+            // this.load.image('playerHulkRight', 'custom/playerHulkRight.png');
+            // this.load.image('playerHulkLeft', 'custom/playerHulkLeft.png');
+            // this.load.image('playerHulkGrab', 'custom/playerHulkGrab.png');
 
             this.load.image('platform', 'custom/platform.png');
 
@@ -142,13 +142,13 @@ window.onload = function () {
 
             this.load.image('bgCenter', 'custom/fullW.png');
             // this.load.image('obstacle', 'custom/obstacleRock.png');
-            this.load.image('bonusHulk', 'custom/bonusHulk2.png');
+            // this.load.image('bonusHulk', 'custom/bonusHulk2.png');
             // audio
             this.load.audio('Catch1', ['custom/sound/player' + playerConfig.skin + 'Catch1.ogg', 'custom/sound/player' + playerConfig.skin + 'Catch1.mp3']);
             this.load.audio('Catch2', ['custom/sound/player' + playerConfig.skin + 'Catch2.ogg', 'custom/sound/player' + playerConfig.skin + 'Catch2.mp3']);
             this.load.audio('Jump1', ['custom/sound/player' + playerConfig.skin + 'Jump1.ogg', 'custom/sound/player' + playerConfig.skin + 'Jump1.mp3']);
             this.load.audio('Jump2', ['custom/sound/player' + playerConfig.skin + 'Jump2.ogg', 'custom/sound/player' + playerConfig.skin + 'Jump2.mp3']);
-            this.load.audio('JumpBonusHulk', ['custom/sound/playerHulkBonusJump.ogg', 'custom/sound/playerHulkBonusJump.mp3']);
+            // this.load.audio('JumpBonusHulk', ['custom/sound/playerHulkBonusJump.ogg', 'custom/sound/playerHulkBonusJump.mp3']);
             this.load.audio('crackNeck', ['custom/sound/crackNeck.ogg', 'custom/sound/crackNeck.mp3']);
             this.load.audio('Dead', ['custom/sound/playerClassicDead.ogg', 'custom/sound/playerClassicDead.mp3']);
       }
@@ -191,7 +191,7 @@ window.onload = function () {
             catch2 = this.sound.add('Catch2');
             dead = this.sound.add('Dead');
             crackNeck = this.sound.add('crackNeck');
-            hulkJump = this.sound.add('JumpBonusHulk');
+            // hulkJump = this.sound.add('JumpBonusHulk');
 
             
 
@@ -202,7 +202,6 @@ window.onload = function () {
             platformGroup = this.physics.add.staticGroup();
             for (let i = 70; i < screenSize.height; i += 75) {
                   let pickWidth = Phaser.Math.Between(0, randomWidth.length - 1);
-                  console.log(randomWidth[pickWidth]);
                   let randomHeight = screenSize.height - i - 15; // var randomHeight = Phaser.Math.Between((screenSize.height - i) - 50, (screenSize.height - i) + 50);
                   platformGroup.create(randomWidth[pickWidth], randomHeight, 'platform'); //.setScale(Phaser.Math.Between(700, 1000) / 1000).refreshBody();  
             }
@@ -229,10 +228,10 @@ window.onload = function () {
             // collideToRock = this.physics.add.collider(player, obstacleGroup, hitRock);
 
             // bonus
-            bonusGroup = this.physics.add.staticGroup();
-            bonusGroup.create(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(-1000, -2000), 'bonusHulk').setScale(0.2).setCircle(45).refreshBody();
+            // bonusGroup = this.physics.add.staticGroup();
+            // bonusGroup.create(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(-1000, -2000), 'bonusHulk').setScale(0.2).setCircle(45).refreshBody();
             
-            bonusElements = bonusGroup.getChildren();
+            // bonusElements = bonusGroup.getChildren();
 
 
 
@@ -275,12 +274,12 @@ window.onload = function () {
                   if (playerConfig.boost == '') {
                         player.setTexture('playerGrab');
                         // globaliseThis.physics.world.removeCollider(isUnderRock);
-                        if (isHulk == true){
-                              // collideToRock = this.physics.add.collider(player, obstacleGroup, hitRock);
-                        }
-                        isHulk = false;
+                        // if (isHulk == true){
+                        //       // collideToRock = this.physics.add.collider(player, obstacleGroup, hitRock);
+                        // }
+                        // isHulk = false;
                   } else {
-                        player.setTexture('playerHulkGrab');
+                        // player.setTexture('playerHulkGrab');
                   }
 
                   
@@ -315,7 +314,7 @@ window.onload = function () {
 
 
             this.input.on('pointerup', function (pointer, gameObject) {
-                  
+                  console.log(pointer.worldY);
                   if (cursorCharDown) {
                         graphics.clear();
                         player.setGravityY(300);
@@ -334,14 +333,14 @@ window.onload = function () {
 
                         if (deg > 270 && deg < 360 || deg > 0 && deg < 75) {
                               if (playerConfig.boost == 'hulk') {
-                                    player.setTexture('playerHulkLeft');
+                                    // player.setTexture('playerHulkLeft');
                               } else {
                                     player.setTexture('playerLeft');
                               }
 
                         } else if (deg < 95 && deg > 75) {
                               if (playerConfig.boost == 'hulk') {
-                                    player.setTexture('playerHulkTop');
+                                    // player.setTexture('playerHulkTop');
                               } else {
                                     player.setTexture('playerTop');
                               }
@@ -349,7 +348,7 @@ window.onload = function () {
                         } else {
 
                               if (playerConfig.boost == 'hulk') {
-                                    player.setTexture('playerHulkRight');
+                                    // player.setTexture('playerHulkRight');
                               } else {
                                     // collideToRock = this.physics.add.collider(player, obstacleGroup, hitRock);
                                     player.setTexture('playerRight');
@@ -421,12 +420,12 @@ window.onload = function () {
             isHulk = true;
             // globaliseThis.physics.world.removeCollider(collideToRock);
 
-            bonusGroup.kill(gameObject2);
+            // bonusGroup.kill(gameObject2);
             player.setTexture('playerHulkTop');
             playerConfig.boost = 'hulk';
-            bonusLastDead = bonusGroup.getFirstDead();
-            bonusLastDead.body.reset(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(camera.scrollY - 10000, camera.scrollY + 30000)); // THERE
-            bonusLastDead.setActive(true);
+            // bonusLastDead = bonusGroup.getFirstDead();
+            // bonusLastDead.body.reset(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(camera.scrollY - 10000, camera.scrollY + 30000)); // THERE
+            // bonusLastDead.setActive(true);
       }
 
       // killRock = function (gameObject1, gameObject2){
@@ -466,14 +465,14 @@ window.onload = function () {
             scoreText.setText('Score: ' + scoreBoard);
 
             // Bonus
-            bonusElements.forEach(ele => {
-                  if (ele.y - 300 > camera.scrollY + screenSize.height) {
-                        bonusGroup.kill(ele);
-                        bonusLastDead = bonusGroup.getFirstDead();
-                        bonusLastDead.body.reset(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(camera.scrollY - 10000, camera.scrollY));
-                        bonusLastDead.setActive(true);
-                  }
-            });
+            // bonusElements.forEach(ele => {
+            //       if (ele.y - 300 > camera.scrollY + screenSize.height) {
+            //             bonusGroup.kill(ele);
+            //             bonusLastDead = bonusGroup.getFirstDead();
+            //             bonusLastDead.body.reset(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(camera.scrollY - 10000, camera.scrollY));
+            //             bonusLastDead.setActive(true);
+            //       }
+            // });
 
             platformElements.forEach(ele => {
                   // Si: Position prise dépasse la caméra de 300 px
@@ -481,7 +480,7 @@ window.onload = function () {
                         platformGroup.kill(ele);
                         platformLastDead = platformGroup.getFirstDead();
                         let pickWidth = Phaser.Math.Between(0, randomWidth.length);
-                        platformLastDead.body.reset(randomWidth[pickWidth], camera.scrollY - 75);
+                        platformLastDead.body.reset(randomWidth[pickWidth], camera.scrollY - 75); // Changer 75 pour changer la difficulté ?
                         platformLastDead.setActive(true);
                   }
             });
@@ -529,7 +528,7 @@ window.onload = function () {
             }
 
             // overlaps
-            this.physics.world.overlap(player, bonusGroup, giveHulk);
+            // this.physics.world.overlap(player, bonusGroup, giveHulk);
             isSuspended = this.physics.world.overlap(player, platformGroup);
             // isUnderRock = this.physics.world.overlap(player, obstacleGroup, killRock);
             
