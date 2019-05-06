@@ -14,7 +14,7 @@ var config = {
       physics: {
             default: 'arcade',
             arcade: {
-                  debug: true,
+                  debug: false,
             }
       },
       scene: {
@@ -36,7 +36,6 @@ var game = new Phaser.Game(config);
 var scoreBoard;
 var scoreValue;
 
-var camera;
 
 // Joueur
 var isSuspended;
@@ -47,9 +46,9 @@ var playerConfig = {};
 var lineStr;
 
 // Prises
-var platformGroup;
-var platformElements;
-var platformLastDead;
+var priseGroup;
+var priseElements;
+var priseLastDead;
 
 var obstacleGroup;
 var obstacleElements;
@@ -98,7 +97,7 @@ var highElements = [];
 
 function preload() {
       this.load.atlas('playerTop', 'custom/slimeAnim/slimeAnim.png', 'custom/slimeAnim/slimeAnim.json');
-      this.load.atlas('platform', 'custom/prises/prise.png', 'custom/prises/prise.json')
+      this.load.atlas('prise', 'custom/prises/prise.png', 'custom/prises/prise.json')
 
       this.load.image('topImage', 'custom/top.jpg');
       this.load.image('botImage', 'custom/bottom.jpg');
@@ -112,18 +111,12 @@ function preload() {
 
 
 function create() {
-
+      
       initPlayer();
       deadSoundProgress = false;
 
-      this.input.addDownCallback(function () {
-            if (game.sound.context.state === 'suspended') {
-                  game.sound.context.resume();
-            }
-      });
 
       globaliseThis = this;
-      camera = this.cameras.main;
 
       isSuspended = false;
       // isUnderRock = false;
@@ -143,13 +136,13 @@ function create() {
       // jump1 = this.sound.add('Jump1');
 
       
-      platformGroup = this.physics.add.group();
+      priseGroup = this.physics.add.group();
       for (let i = 70; i < screenSize.height; i += 75) {
             let pickWidth = Phaser.Math.Between(0, randomWidth.length - 1);
             let randomHeight = screenSize.height - i - 15; // var randomHeight = Phaser.Math.Between((screenSize.height - i) - 50, (screenSize.height - i) + 50);
-            platformGroup.create(randomWidth[pickWidth], randomHeight, 'platform', 'Composition 1_00000.png').setScale(0.4).setOffset(40, 40).setCircle(60); //.setScale(Phaser.Math.Between(700, 1000) / 1000).refreshBody();  
+            priseGroup.create(randomWidth[pickWidth], randomHeight, 'prise', 'Composition 1_00000.png').setScale(0.4).setOffset(40, 40).setCircle(60); //.setScale(Phaser.Math.Between(700, 1000) / 1000).refreshBody();  
       }
-      platformElements = platformGroup.getChildren();
+      priseElements = priseGroup.getChildren();
 
       this.player = this.physics.add.sprite(center, screenSize.height, 'playerTop', 'Slime_Stall_00000.png').setCircle(50).setOffset(50).setScale(0.9).setInteractive();
 
@@ -171,7 +164,7 @@ function create() {
 
       this.anims.create({
             key: 'disap',
-            frames: this.anims.generateFrameNames('platform',
+            frames: this.anims.generateFrameNames('prise',
                   {
                         prefix: 'Composition 1_',
                         suffix: '.png',
@@ -227,7 +220,7 @@ function create() {
             if (isSuspended) {    
                   this.player.setGravityY(0);
                   this.player.setVelocity(0);
-                  this.physics.world.overlap(this.player, platformGroup, eatTarget);
+                  this.physics.world.overlap(this.player, priseGroup, priseAte);
 
                   d = 0;
             }
@@ -307,10 +300,10 @@ function create() {
 
 
 function update() {
-      camera.centerOn(this.player.x, this.player.y - 100);
+      this.cameras.main.centerOn(this.player.x, this.player.y - 100);
 
       // Place l'arrière plan
-      bgCenter.setPosition(window.innerWidth / 2, camera.scrollY + window.innerHeight / 2);
+      bgCenter.setPosition(window.innerWidth / 2, this.cameras.main.scrollY + window.innerHeight / 2);
 
       // Score
       if (this.player.y - screenSize.height < scoreValue) {
@@ -326,23 +319,24 @@ function update() {
 
 
 
-      platformElements.forEach(ele => {
-            // Si: Position prise dépasse la caméra de 300 px
-            if (ele.y > camera.scrollY + screenSize.height) {
-                  platformGroup.kill(ele);
-                  platformLastDead = platformGroup.getFirstDead();
+      priseElements.forEach(ele => {
+            if (ele.y > this.cameras.main.scrollY + screenSize.height) {
+                  priseGroup.kill(ele);
+                  priseLastDead = priseGroup.getFirstDead();
                   let pickWidth = Phaser.Math.Between(0, randomWidth.length - 1);
-                  platformLastDead.body.reset(randomWidth[pickWidth], camera.scrollY - 75); // Changer 75 pour changer la difficulté ?
-                  platformLastDead.setActive(true);
-                  
+                  priseLastDead.body.reset(randomWidth[pickWidth], this.cameras.main.scrollY - 75); // Changer 75 pour changer la difficulté ?
+                  priseLastDead.anims.stop();
+                  priseLastDead.setTexture('prise', 'Composition 1_00000.png');
+                  priseLastDead.setActive(true);
+                  priseLastDead.enableBody();
             }
       });
 
 
       // Update fond de grimpe
       highElements.forEach(ele => {
-            if (ele.y - 1300 > camera.scrollY + screenSize.height) {
-                  ele.setPosition(center, camera.scrollY - 500 - screenSize.height);
+            if (ele.y - 1300 > this.cameras.main.scrollY + screenSize.height) {
+                  ele.setPosition(center, this.cameras.main.scrollY - 500 - screenSize.height);
             }
       });
       this.player.body.velocity.y < 4 && this.player.body.velocity.y > -4 ? isflying = false : isflying = true;
@@ -366,7 +360,7 @@ function update() {
             this.time.delayedCall(1000, gameOver, [], this);
       }
 
-      isSuspended = this.physics.world.overlap(this.player, platformGroup);
+      isSuspended = this.physics.world.overlap(this.player, priseGroup);
 
 }
 
@@ -375,9 +369,17 @@ giveStrenght = function (gameObject1, gameObject2) {
       // playerConfig.boost = 'superStrenght';
 }
 
-eatTarget = function (gameObject1, gameObject2) {
+priseAte = function (gameObject1, gameObject2) {
       // globaliseThis.physics.moveToObject(gameObject2, gameObject1, 50);
+      // gameObject2.disableBody();
       gameObject2.play("disap");
+      gameObject2.disableBody();
+      if(gameObject2.isAte != true){
+            gameObject2.isAte = true;
+            gameObject2.on('animationcomplete-' + 'disap', function (currentAnim, currentFramee, sprite) { 
+                  gameObject2.isAte = false;
+            });
+      }
       // globaliseThis.physics.moveToObject(gameObject1, gameObject2, 200);
 }
 
