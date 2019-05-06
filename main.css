@@ -7,12 +7,20 @@ body{
       padding: 10px 15px;
       border: 0;
 }
+
+.btn--score{
+      position: absolute;
+      left :0;
+      top: 0;
+      margin: 20px;
+      background-color: #FFF;
+}
+
 .btn--pause{
       position: absolute;
       right: 0;
       bottom: 0;
-      margin: 50px;
-      z-index: -1;
+      margin: 20px;
 }
 
 .btn--prev{
@@ -34,6 +42,7 @@ body{
 .onboarding-img{
       max-width: 100%;
 }
+
 .box--onboarding{
       background-color: #FFF;
       width: 90%;
@@ -62,6 +71,7 @@ body{
 .tac{
       text-align: center;
 }
+
 
 .dn{
       display: none;
