@@ -4,6 +4,7 @@ window.onload = function () {
             width: window.innerWidth,
             height: window.innerHeight
       }
+      console.warn(screenSize);
 
       var config = {
             type: Phaser.AUTO,
@@ -15,7 +16,7 @@ window.onload = function () {
             physics: {
                   default: 'arcade',
                   arcade: {
-                        debug: true
+                        debug: false
                   }
             },
             scene: {
@@ -25,7 +26,7 @@ window.onload = function () {
             }
 
       };
-
+      
       var dom = {
             loseBox: document.getElementById("loseBox"),
             deadOrigin: document.getElementById("containerDeadOrigin"),
@@ -94,7 +95,6 @@ window.onload = function () {
       const center = screenSize.width / 2;
       
       const randomWidth = [
-            center - 250,
             center - 200,
             center - 150,
             center - 100,
@@ -104,7 +104,6 @@ window.onload = function () {
             center + 100,
             center + 150,
             center + 200,
-            center + 250
       ]
 
       initPlayer();
@@ -119,10 +118,12 @@ window.onload = function () {
 
       function preload() {
             // images
-            this.load.image('playerTop', 'custom/player' + playerConfig.skin + 'Top.png');
-            this.load.image('playerRight', 'custom/player' + playerConfig.skin + 'Right.png');
-            this.load.image('playerLeft', 'custom/player' + playerConfig.skin + 'Left.png');
-            this.load.image('playerGrab', 'custom/player' + playerConfig.skin + 'Grab.png');
+            // this.load.image('playerTop', 'custom/player' + playerConfig.skin + 'Top.png');
+            // this.load.spritesheet('playerTop', 'custom/slimeAnim.png', { frameWidth: 114 , frameHeight: 110 });
+            this.load.atlas('playerTop', 'custom/slimeAnim/slimeAnim.png', 'custom/slimeAnim/slimeAnim.json')
+            // this.load.image('playerRight', 'custom/player' + playerConfig.skin + 'Right.png');
+            // this.load.image('playerLeft', 'custom/player' + playerConfig.skin + 'Left.png');
+            // this.load.image('playerGrab', 'custom/player' + playerConfig.skin + 'Grab.png');
 
             // this.load.image('playerHulkTop', 'custom/playerHulkTop.png');
             // this.load.image('playerHulkRight', 'custom/playerHulkRight.png');
@@ -141,13 +142,13 @@ window.onload = function () {
             // this.load.image('obstacle', 'custom/obstacleRock.png');
             // this.load.image('bonusHulk', 'custom/bonusHulk2.png');
             // audio
-            this.load.audio('Catch1', ['custom/sound/player' + playerConfig.skin + 'Catch1.ogg', 'custom/sound/player' + playerConfig.skin + 'Catch1.mp3']);
-            this.load.audio('Catch2', ['custom/sound/player' + playerConfig.skin + 'Catch2.ogg', 'custom/sound/player' + playerConfig.skin + 'Catch2.mp3']);
-            this.load.audio('Jump1', ['custom/sound/player' + playerConfig.skin + 'Jump1.ogg', 'custom/sound/player' + playerConfig.skin + 'Jump1.mp3']);
-            this.load.audio('Jump2', ['custom/sound/player' + playerConfig.skin + 'Jump2.ogg', 'custom/sound/player' + playerConfig.skin + 'Jump2.mp3']);
+            // this.load.audio('Catch1', ['custom/sound/player' + playerConfig.skin + 'Catch1.ogg', 'custom/sound/player' + playerConfig.skin + 'Catch1.mp3']);
+            // this.load.audio('Catch2', ['custom/sound/player' + playerConfig.skin + 'Catch2.ogg', 'custom/sound/player' + playerConfig.skin + 'Catch2.mp3']);
+            // this.load.audio('Jump1', ['custom/sound/player' + playerConfig.skin + 'Jump1.ogg', 'custom/sound/player' + playerConfig.skin + 'Jump1.mp3']);
+            // this.load.audio('Jump2', ['custom/sound/player' + playerConfig.skin + 'Jump2.ogg', 'custom/sound/player' + playerConfig.skin + 'Jump2.mp3']);
             // this.load.audio('JumpBonusHulk', ['custom/sound/playerHulkBonusJump.ogg', 'custom/sound/playerHulkBonusJump.mp3']);
-            this.load.audio('crackNeck', ['custom/sound/crackNeck.ogg', 'custom/sound/crackNeck.mp3']);
-            this.load.audio('Dead', ['custom/sound/playerClassicDead.ogg', 'custom/sound/playerClassicDead.mp3']);
+            // this.load.audio('crackNeck', ['custom/sound/crackNeck.ogg', 'custom/sound/crackNeck.mp3']);
+            // this.load.audio('Dead', ['custom/sound/playerClassicDead.ogg', 'custom/sound/playerClassicDead.mp3']);
       }
 
 
@@ -161,7 +162,6 @@ window.onload = function () {
                   if (game.sound.context.state === 'suspended') {
                         game.sound.context.resume();
                   }
-
             });
 
             globaliseThis = this;
@@ -176,44 +176,70 @@ window.onload = function () {
             bgCenter = this.add.sprite(center - 1100, window.innerHeight, 'bgCenter');
 
             // Background repeat
-            up = this.add.sprite(center + 50, window.innerHeight - 1300, 'topImage');
-            bot = this.add.sprite(center + 50, window.innerHeight - 2600, 'botImage');
-            middle = this.add.sprite(center + 50, window.innerHeight, 'centerImage');
+            up = this.add.sprite(center, window.innerHeight - 1300, 'topImage').setOrigin(0.5);
+            bot = this.add.sprite(center, window.innerHeight - 2600, 'botImage').setOrigin(0.5);
+            middle = this.add.sprite(center, window.innerHeight, 'centerImage').setOrigin(0.5);
             highElements.push(up, bot, middle);
 
             // Init songs
-            jump1 = this.sound.add('Jump1');
-            jump2 = this.sound.add('Jump2');
-            catch1 = this.sound.add('Catch1');
-            catch2 = this.sound.add('Catch2');
-            dead = this.sound.add('Dead');
-            crackNeck = this.sound.add('crackNeck');
+            // jump1 = this.sound.add('Jump1');
+            // jump2 = this.sound.add('Jump2');
+            // catch1 = this.sound.add('Catch1');
+            // catch2 = this.sound.add('Catch2');
+            // dead = this.sound.add('Dead');
+            // crackNeck = this.sound.add('crackNeck');
             // hulkJump = this.sound.add('JumpBonusHulk');
 
             
 
             // Génération prises
 
+            // platformGroup = this.physics.add.staticGroup();
+            // for (let i = 70; i < screenSize.height; i += 75) {
+            //       let pickWidth = Phaser.Math.Between(0, randomWidth.length - 1);
+            //       let randomHeight = screenSize.height - i - 15; // var randomHeight = Phaser.Math.Between((screenSize.height - i) - 50, (screenSize.height - i) + 50);
+            //       platformGroup.create(randomWidth[pickWidth], randomHeight, 'platform').setScale(0.5).setOrigin(0.5).setCircle(1).refreshBody(); //.setScale(Phaser.Math.Between(700, 1000) / 1000).refreshBody();  
+            // }
+            // platformElements = platformGroup.getChildren();
             
-            
-            platformGroup = this.physics.add.staticGroup();
+
+            platformGroup = this.physics.add.group();
             for (let i = 70; i < screenSize.height; i += 75) {
                   let pickWidth = Phaser.Math.Between(0, randomWidth.length - 1);
                   let randomHeight = screenSize.height - i - 15; // var randomHeight = Phaser.Math.Between((screenSize.height - i) - 50, (screenSize.height - i) + 50);
-                  platformGroup.create(randomWidth[pickWidth], randomHeight, 'platform'); //.setScale(Phaser.Math.Between(700, 1000) / 1000).refreshBody();  
+                  platformGroup.create(randomWidth[pickWidth], randomHeight, 'platform').setScale(1).setOrigin(0.5).setCircle(22); //.setScale(Phaser.Math.Between(700, 1000) / 1000).refreshBody();  
             }
             platformElements = platformGroup.getChildren();
-
-            // Update plateformes
-            
-
-
 
             
 
             // Init player
-            player = this.physics.add.sprite(window.innerWidth / 2 + 50, window.innerHeight, 'playerTop').setScale(0.2).setInteractive();;
+            // player = this.physics.add.sprite(center, screenSize.height, 'playerTop').setOrigin(0.5).setScale(0.2).setInteractive();;
+            player = this.physics.add.sprite(center, screenSize.height, 'playerTop', 'Slime_Stall_00000.png').setCircle(50).setOffset(50).setScale(0.9).setInteractive();
 
+            this.anims.create({
+                  key: 'stall',
+                  frames: this.anims.generateFrameNames('playerTop', 
+                        { 
+                              prefix: 'Slime_Stall_',
+                              suffix: '.png',
+                              start: 0,
+                              end: 27,
+                              zeroPad: 5
+
+                        }
+                  ),
+                  frameRate: 10,
+                  repeat: -1
+            });
+            player.play("stall");
+            
+            
+
+           
+
+            
+            
             // Obstacles
             // obstacleGroup = this.physics.add.staticGroup();
 
@@ -269,7 +295,7 @@ window.onload = function () {
                   cursorCharDown = true;
                   
                   if (playerConfig.boost == '') {
-                        player.setTexture('playerGrab');
+                        // player.setTexture('playerGrab');
                         // globaliseThis.physics.world.removeCollider(isUnderRock);
                         // if (isHulk == true){
                         //       // collideToRock = this.physics.add.collider(player, obstacleGroup, hitRock);
@@ -290,10 +316,13 @@ window.onload = function () {
                   if (isSuspended) {    
                         player.setGravityY(0);
                         player.setVelocity(0);
+                        this.physics.world.overlap(player, platformGroup, eatTarget);
+                       
+
                         if (d == 200) {
-                              catch1.play();
+                              // catch1.play();
                         } else {
-                              catch2.play();
+                              // catch2.play();
                         }
 
                         d = 0;
@@ -314,7 +343,7 @@ window.onload = function () {
                   console.log(pointer.worldY);
                   if (cursorCharDown) {
                         graphics.clear();
-                        player.setGravityY(300);
+                        player.setGravityY(350);
 
                         var BetweenPoints = Phaser.Math.Angle.BetweenPoints;
 
@@ -332,14 +361,14 @@ window.onload = function () {
                               if (playerConfig.boost == 'hulk') {
                                     // player.setTexture('playerHulkLeft');
                               } else {
-                                    player.setTexture('playerLeft');
+                                    // player.setTexture('playerLeft');
                               }
 
                         } else if (deg < 95 && deg > 75) {
                               if (playerConfig.boost == 'hulk') {
                                     // player.setTexture('playerHulkTop');
                               } else {
-                                    player.setTexture('playerTop');
+                                    // player.setTexture('playerTop');
                               }
 
                         } else {
@@ -348,7 +377,7 @@ window.onload = function () {
                                     // player.setTexture('playerHulkRight');
                               } else {
                                     // collideToRock = this.physics.add.collider(player, obstacleGroup, hitRock);
-                                    player.setTexture('playerRight');
+                                    // player.setTexture('playerRight');
                               }
                         }
 
@@ -373,13 +402,13 @@ window.onload = function () {
 
                         if (isflying == false) {
                               if (playerConfig.boost == 'hulk') {
-                                    hulkJump.play();
+                                    // hulkJump.play();
                                     playerConfig.boost = '';
                               }
                               else if (d == 150) {
-                                    jump2.play(); // sound
+                                    // jump2.play(); // sound
                               } else {
-                                    jump1.play(); // sound
+                                    // jump1.play(); // sound
                               }
 
                               velocityFromRotation(rad, str, velocity);
@@ -418,10 +447,10 @@ window.onload = function () {
             // globaliseThis.physics.world.removeCollider(collideToRock);
 
             // bonusGroup.kill(gameObject2);
-            player.setTexture('playerHulkTop');
+            // player.setTexture('playerHulkTop');
             playerConfig.boost = 'hulk';
             // bonusLastDead = bonusGroup.getFirstDead();
-            // bonusLastDead.body.reset(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(camera.scrollY - 10000, camera.scrollY + 30000)); // THERE
+            // bonusLastDead.body.reset(Phaser.Math.Between(center - 300, center + 300), Phaser.Math.Between(camera.scrollY - 10000, camera.scrollY + 30000)); 
             // bonusLastDead.setActive(true);
       }
 
@@ -476,7 +505,7 @@ window.onload = function () {
                   if (ele.y > camera.scrollY + screenSize.height) {
                         platformGroup.kill(ele);
                         platformLastDead = platformGroup.getFirstDead();
-                        let pickWidth = Phaser.Math.Between(0, randomWidth.length);
+                        let pickWidth = Phaser.Math.Between(0, randomWidth.length - 1);
                         platformLastDead.body.reset(randomWidth[pickWidth], camera.scrollY - 75); // Changer 75 pour changer la difficulté ?
                         platformLastDead.setActive(true);
                   }
@@ -500,7 +529,7 @@ window.onload = function () {
             // Update fond de grimpe
             highElements.forEach(ele => {
                   if (ele.y - 1300 > camera.scrollY + screenSize.height) {
-                        ele.setPosition(screenSize.width / 2 + 50, camera.scrollY - 500 - screenSize.height);
+                        ele.setPosition(center, camera.scrollY - 500 - screenSize.height);
                   }
             });
             player.body.velocity.y < 4 && player.body.velocity.y > -4 ? isflying = false : isflying = true;
@@ -509,11 +538,11 @@ window.onload = function () {
             // Game over
             if (player.body.velocity.y > 600) {
                   if (deadSoundProgress == false) {
-                        dead.play();
+                        // dead.play();
                         isOver = false;
                         deadSoundProgress = true;
                   }
-                  this.time.delayedCall(1500, gameOver, [], this);
+                  this.time.delayedCall(1000, gameOver, [], this);
             }
             if(isOver){
                   if (deadSoundProgress == false){
@@ -521,7 +550,7 @@ window.onload = function () {
                         deadSoundProgress = true;
                         // crackNeck.play();
                   } 
-                  this.time.delayedCall(1500, gameOver, [], this);
+                  this.time.delayedCall(1000, gameOver, [], this);
             }
 
             // overlaps
@@ -532,11 +561,21 @@ window.onload = function () {
 
       }
 
+      eatTarget = function (gameObject1, gameObject2) {
+            // globaliseThis.physics.moveTo(gameObject2, gameObject1, null, 2000); // THERE
+            gameObject2.anims.play('disap');
+            globaliseThis.physics.moveToObject(gameObject2, gameObject1, 50);
+            // globaliseThis.physics.moveToObject(gameObject1, gameObject2, 200);
+      }
+
       // Pause + Lance les actions sous-jacentes
       gameOver = function () {
             globaliseThis.scene.pause();
             showDeadMenue();
       }
+
+      
+      
 
       
       // Ouvre la box de mort

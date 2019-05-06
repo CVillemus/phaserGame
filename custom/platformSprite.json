@@ -1,0 +1,104 @@
+{
+	"textures": [
+		{
+			"image": "platformSprite.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 111,
+				"h": 47
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "prise1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 45,
+						"h": 45
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 45,
+						"h": 45
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 45,
+						"h": 45
+					}
+				},
+				{
+					"filename": "prise2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 37,
+						"h": 37
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 37,
+						"h": 37
+					},
+					"frame": {
+						"x": 48,
+						"y": 1,
+						"w": 37,
+						"h": 37
+					}
+				},
+				{
+					"filename": "prise3.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 23,
+						"h": 23
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 23,
+						"h": 23
+					},
+					"frame": {
+						"x": 87,
+						"y": 1,
+						"w": 23,
+						"h": 23
+					}
+				},
+				{
+					"filename": "prise4.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 13,
+						"h": 13
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 13,
+						"h": 13
+					},
+					"frame": {
+						"x": 87,
+						"y": 26,
+						"w": 13,
+						"h": 13
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:c3bd9ae2fb4a8aa6e199b171ee2b8d6c:6fe3ba10445b778b68e39bf742f2eb57:b194f92c742522274ee4699b793fcfcb$"
+	}
+}
