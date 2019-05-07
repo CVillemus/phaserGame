@@ -8,7 +8,7 @@ var dom = {
       pause: document.getElementById("buttonGamePause"),
       retry: document.getElementById("buttonGameRetry"),
       scoreBox: document.getElementById("scoreBox"),
-      
+      boxLoader: document.getElementById("boxLoader"),
       onBoarding: document.getElementById("onBoarding"),
       onBoardingBtnBefore: document.querySelector("#onBoarding .btn--prev"),
 }

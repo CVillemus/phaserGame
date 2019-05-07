@@ -28,7 +28,6 @@ var config = {
 
 // Local storage uses
 var bestScore;
-
 var game = new Phaser.Game(config);
 
 
@@ -53,15 +52,8 @@ var priseLastDead;
 var obstacleGroup;
 var obstacleElements;
 
-// var hasStrenght;
-// var isStrenght = false;
-
 // Sounds
-var catch1;
-var catch2;
-var jump1;
-var jump2;
-var dead;
+
 
 var deadSoundProgress;
 
@@ -89,20 +81,27 @@ initPlayer();
 
 function initPlayer() {
       playerConfig = {
-            skin: 'Classic',
-            skills: ['sticky', 'megajump'],
+            skills : {
+                  superStrenght: false,
+                  stickySlime: false,
+                  elasticSlime: true,
+                  dobJump: true,
+            }
       };
 }
-var highElements = [];
+
+
+
+let highElements = [];
+
 
 function preload() {
-      this.load.once('progress', function (progress) {
-            console.log(progress);
-      });
 
-      this.load.on('complete', function () {
-            console.log("complete");
-      });
+      // Loader
+      this.load.once('progress', function (progress) { console.log(progress)});
+      this.load.on('complete', function () {dom.boxLoader.classList.add("dn")});
+
+      // this.load.setPath('assets/sprites/');
 
       this.load.atlas('playerTop', 'custom/slimeAnim/slimeAnim.png', 'custom/slimeAnim/slimeAnim.json');
       this.load.atlas('prise', 'custom/prises/prise.png', 'custom/prises/prise.json')
@@ -127,7 +126,7 @@ function create() {
 
       globaliseThis = this;
 
-      isSuspended = false;
+      isSuspended = true;
       // isUnderRock = false;
 
       isOver = false;
@@ -216,8 +215,11 @@ function create() {
 
       // Tracé de trajectoire (chargement)
       var graphics;
+      var disabDobJump = true;
+      var isStick = false;
 
       this.player.on('pointerdown', function (pointer, localX, localY) {
+            // clic
             cursorCharDown = true;
             
             pcx = this.player.x;
@@ -225,28 +227,54 @@ function create() {
 
             graphics = this.add.graphics({ lineStyle: { width: 3, color: 0xaa00aa } });
             lineStr = new Phaser.Geom.Line(pcx, pcy, pointer.worldX, pointer.worldY);
-
-            if (isSuspended) {    
+            
+            console.log(playerConfig.skills.stickySlime);
+            if (isSuspended || playerConfig.skills.stickySlime) {    
                   this.player.setGravityY(0);
                   this.player.setVelocity(0);
-                  this.physics.world.overlap(this.player, priseGroup, priseAte);
-
+                  if(isSuspended){
+                        this.physics.world.overlap(this.player, priseGroup, priseAte);
+                        disabDobJump = true;
+                  } else if (playerConfig.skills.stickySlime && disabDobJump == false){
+                        playerConfig.skills.stickySlime = false;
+                        isStick = true;
+                        // COOLDOWN
+                        cooldownStickySlime = this.time.delayedCall(10000, cooldownBonus, ["stickySlime"], this);
+                  }
+                  
                   d = 0;
+                  
             }
 
+            if (playerConfig.skills.dobJump && disabDobJump == false) {
+                  // this.player.setVelocityY(-500);
+                  this.player.body.setVelocityY(-600);
+                  this.player.setGravityY(350);
+                  playerConfig.skills.dobJump = false;
+                  // COOLDOWN
+                  cooldownDobJump = this.time.delayedCall(10000, cooldownBonus, ["dobJump"], this);
+                  
+            }
+
+            // if (playerConfig.skills.dobJump && isSuspended == false){
+            //       console.log("goes");
+            // }
+            
             // Indicateur précédent saut
             this.input.on('pointermove', function (pointer, currentlyOver) {
-                  if (cursorCharDown == true) {
+                  if (cursorCharDown && disabDobJump == true || cursorCharDown && isStick) {
                         lineStr.setTo(pcx, pcy, pointer.worldX, pointer.worldY);
                         graphics.clear();
                         graphics.strokeLineShape(lineStr);
                   }
             });
+            
       }, this);
 
 
       this.input.on('pointerup', function (pointer, gameObject) {
-            if (cursorCharDown) {
+            if (cursorCharDown || disabDobJump) {
+                  isStick = false;
                   graphics.clear();
                   this.player.setGravityY(350);
 
@@ -274,29 +302,26 @@ function create() {
                   rad = Phaser.Math.Angle.Between(prx, pry, pcx, pcy);
 
 
-                  if (playerConfig.skills == 'superStrenght') {
-                        if (d > 800) {
-                              d = 800;
-                        }
-                  } else {
-                        if (d > 150) {
-                              d = 150;
-                        }
-                  }
-
-                  str = d * 3.5;
                   
+                  if (d > 150) {
+                        d = 150;
+                  }
+                  
+
+                  playerConfig.skills.superStrenght ? str = d * 5 : str = d * 3;
                   if (isflying == false) {
-                        if (playerConfig.skills == 'superStrenght') {
-                              // mètre le skill en cooldown
-                              playerConfig.skills = '';
+                        if (playerConfig.skills.superStrenght) {
+                              playerConfig.skills.superStrenght = false;
+                              // COOLDOWN
+                              cooldownSuperStrenght = this.time.delayedCall(10000, cooldownBonus, ["superStrenght"], this);
                         }
+
                         else if (d == 150) {
                               // son selon puissance fort
                         } else {
                               // son selon puissance faible
                         }
-
+                        disabDobJump = false;
                         velocityFromRotation(rad, str, velocity);
                         this.player.setVelocity(velocity.x, velocity.y);
                   }
@@ -309,6 +334,7 @@ function create() {
 
 
 function update() {
+      
       this.cameras.main.centerOn(this.player.x, this.player.y - 100);
 
       // Place l'arrière plan
@@ -397,6 +423,13 @@ gameOver = function () {
       globaliseThis.scene.pause();
       showDeadMenue();
 }
+
+cooldownBonus = function (bonus){
+      playerConfig.skills[bonus] = true;
+      console.log("bonus " + bonus + " is back");
+}
+
+
 
 
 
