@@ -303,7 +303,7 @@ function update() {
       this.cameras.main.centerOn(this.player.x, this.player.y - 100);
 
       // Place l'arrière plan
-      bgCenter.setPosition(window.innerWidth / 2, this.cameras.main.scrollY + window.innerHeight / 2);
+      bgCenter.setPosition(screenSize.width / 2, this.cameras.main.scrollY + screenSize.height / 2);
 
       // Score
       if (this.player.y - screenSize.height < scoreValue) {
