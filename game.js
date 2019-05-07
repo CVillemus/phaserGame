@@ -96,6 +96,14 @@ function initPlayer() {
 var highElements = [];
 
 function preload() {
+      this.load.once('progress', function (progress) {
+            console.log(progress);
+      });
+
+      this.load.on('complete', function () {
+            console.log("complete");
+      });
+
       this.load.atlas('playerTop', 'custom/slimeAnim/slimeAnim.png', 'custom/slimeAnim/slimeAnim.json');
       this.load.atlas('prise', 'custom/prises/prise.png', 'custom/prises/prise.json')
 
@@ -103,7 +111,8 @@ function preload() {
       this.load.image('botImage', 'custom/bottom.jpg');
       this.load.image('centerImage', 'custom/center.jpg');
       this.load.image('bgCenter', 'custom/fullW.png');
-
+      
+      
       // audio
       // this.load.audio('Catch1', ['custom/sound/player' + playerConfig.skin + 'Catch1.ogg', 'custom/sound/player' + playerConfig.skin + 'Catch1.mp3']);
 }
@@ -177,7 +186,7 @@ function create() {
             frameRate: 20,
       });
 
-      this.player.play("stall");
+      // this.player.play("stall");
       
       scoreValue = this.player.y - screenSize.height;
 
