@@ -3,7 +3,7 @@
 <head>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <title>Démo TFE - Cascou grimpeur</title>
+      <title>A Slimy Escape</title>
       <!-- Méta Google -->
       <meta name="title" content="Cascou grimpeur" />
       <meta name="description"
@@ -27,13 +27,18 @@
 
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" type="text/css" media="screen" href="main.css">
-      <script src="//cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.min.js"></script>
+      <script src="phaser.min.js"></script>
       
 </head>
 <body>
+      <div>
+            <span id="cooldownBox1" class="btn btn--cd btn--cdone dn">10</span>
+            <span id="cooldownBox2" class="btn btn--cd btn--cdtwo dn">10</span>
+      </div>
       <div id="boxLoader" class="box box--loader box--center">
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum omnis perspiciatis voluptatum velit, incidunt iure fugiat sequi laborum consequuntur cumque labore possimus vitae molestiae nesciunt saepe assumenda aliquam eligendi molestias!</p>
       </div>
+      
       <div id="onBoarding" class="box box--onboarding box--center dn">
             <h2>bienvenue cascou !</h2>
             <img src="custom/gifOnboarding.gif" alt="demoGameplay" class="onboarding-img"/>
@@ -45,7 +50,8 @@
             </div>
       </div>
       <div class="btn btn--score">
-            <span id="scoreBox"></span>
+            <span class="btn--scoreH" id="scoreBox">0</span>
+            <span class="btn--scoreP" id="slimeCountContainer">0</span>
       </div>
       <button id="buttonGamePause" class="btn btn--pause">Pause</button>
       <div class="box box--center box--lose dn" id="loseBox">
@@ -53,6 +59,8 @@
             <!-- <p>You died from: <span id="containerDeadOrigin"></span></p> -->
             <p>Score:<span id="containerActualScore">1</span></p>
             <p>Best:<span id="containerBestScore">1</span><span class="txt-best-score" id="containerBestScoreMessage"></span></p>
+            <p>SlimePart won:<span id="slimePartWon">0</span></p>
+            <p>Total SlimePart:<span id="totalSlimePartWon">0</span></p>
             <div class="tac">
                   <button id="buttonGameRetry" class="btn btn--restart">Restart</button>
             </div>

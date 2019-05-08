@@ -31,9 +31,6 @@ var bestScore;
 var game = new Phaser.Game(config);
 
 
-// Scores
-var scoreBoard;
-var scoreValue;
 
 
 // Joueur
@@ -64,7 +61,6 @@ var isflying = false;
 var globaliseThis;
 
 const center = screenSize.width / 2;
-
 const randomWidth = [
       center - 200,
       center - 150,
@@ -82,10 +78,10 @@ initPlayer();
 function initPlayer() {
       playerConfig = {
             skills : {
-                  superStrenght: false,
+                  superStrenght: true,
                   stickySlime: false,
-                  elasticSlime: true,
-                  dobJump: true,
+                  elasticSlime: false,
+                  dobJump: false,
             }
       };
 }
@@ -93,6 +89,12 @@ function initPlayer() {
 
 
 let highElements = [];
+
+// Bonus CD
+const cooldown = 10;
+var cooldownSuperStrenght;
+var cooldownStickySlime;
+var cooldownDobJump;
 
 
 function preload() {
@@ -218,8 +220,8 @@ function create() {
       var disabDobJump = true;
       var isStick = false;
 
+
       this.player.on('pointerdown', function (pointer, localX, localY) {
-            // clic
             cursorCharDown = true;
             
             pcx = this.player.x;
@@ -228,7 +230,6 @@ function create() {
             graphics = this.add.graphics({ lineStyle: { width: 3, color: 0xaa00aa } });
             lineStr = new Phaser.Geom.Line(pcx, pcy, pointer.worldX, pointer.worldY);
             
-            console.log(playerConfig.skills.stickySlime);
             if (isSuspended || playerConfig.skills.stickySlime) {    
                   this.player.setGravityY(0);
                   this.player.setVelocity(0);
@@ -238,37 +239,26 @@ function create() {
                   } else if (playerConfig.skills.stickySlime && disabDobJump == false){
                         playerConfig.skills.stickySlime = false;
                         isStick = true;
-                        // COOLDOWN
-                        cooldownStickySlime = this.time.delayedCall(10000, cooldownBonus, ["stickySlime"], this);
+                        cooldownStickySlime = this.time.delayedCall(cooldown * 1000, cooldownBonus, ["stickySlime"], this);
                   }
-                  
                   d = 0;
-                  
             }
 
             if (playerConfig.skills.dobJump && disabDobJump == false) {
-                  // this.player.setVelocityY(-500);
                   this.player.body.setVelocityY(-600);
                   this.player.setGravityY(350);
                   playerConfig.skills.dobJump = false;
-                  // COOLDOWN
-                  cooldownDobJump = this.time.delayedCall(10000, cooldownBonus, ["dobJump"], this);
+                  cooldownDobJump = this.time.delayedCall(cooldown * 1000, cooldownBonus, ["dobJump"], this);
                   
             }
 
-            // if (playerConfig.skills.dobJump && isSuspended == false){
-            //       console.log("goes");
-            // }
-            
-            // Indicateur précédent saut
             this.input.on('pointermove', function (pointer, currentlyOver) {
                   if (cursorCharDown && disabDobJump == true || cursorCharDown && isStick) {
                         lineStr.setTo(pcx, pcy, pointer.worldX, pointer.worldY);
                         graphics.clear();
                         graphics.strokeLineShape(lineStr);
                   }
-            });
-            
+            }); 
       }, this);
 
 
@@ -277,7 +267,6 @@ function create() {
                   isStick = false;
                   graphics.clear();
                   this.player.setGravityY(350);
-
 
                   let BetweenPoints = Phaser.Math.Angle.BetweenPoints;
                   prx = pointer.worldX;
@@ -301,19 +290,15 @@ function create() {
                   d = Phaser.Math.Distance.Between(pcx, pcy, prx, pry);
                   rad = Phaser.Math.Angle.Between(prx, pry, pcx, pcy);
 
-
-                  
                   if (d > 150) {
                         d = 150;
                   }
                   
-
                   playerConfig.skills.superStrenght ? str = d * 5 : str = d * 3;
                   if (isflying == false) {
                         if (playerConfig.skills.superStrenght) {
                               playerConfig.skills.superStrenght = false;
-                              // COOLDOWN
-                              cooldownSuperStrenght = this.time.delayedCall(10000, cooldownBonus, ["superStrenght"], this);
+                              cooldownSuperStrenght = this.time.delayedCall(cooldown * 1000, cooldownBonus, ["superStrenght"], this);
                         }
 
                         else if (d == 150) {
@@ -329,11 +314,19 @@ function create() {
             cursorCharDown = false;
 
       }, this);  
-
 }
 
 
 function update() {
+      // TRES BROUILLON
+      if (cooldownSuperStrenght != undefined){
+            showTimerBox();
+            cooldownBox1.innerHTML = cooldown - cooldownSuperStrenght.getElapsedSeconds().toString().substr(0, 2);
+            if (cooldownSuperStrenght.getProgress().toString() == 1){
+                  cooldownSuperStrenght = undefined;
+            }
+      }
+
       
       this.cameras.main.centerOn(this.player.x, this.player.y - 100);
 
@@ -351,8 +344,6 @@ function update() {
       scoreBoard = scoreBoard / 10;
       scoreBoard = Math.trunc(scoreBoard);
       displayCurrentScore();
-
-
 
       priseElements.forEach(ele => {
             if (ele.y > this.cameras.main.scrollY + screenSize.height) {
@@ -374,10 +365,9 @@ function update() {
                   ele.setPosition(center, this.cameras.main.scrollY - 500 - screenSize.height);
             }
       });
+
       this.player.body.velocity.y < 4 && this.player.body.velocity.y > -4 ? isflying = false : isflying = true;
 
-
-      // Game over
       if (this.player.body.velocity.y > 600) {
             if (deadSoundProgress == false) {
                   // dead.play();
@@ -394,9 +384,7 @@ function update() {
             } 
             this.time.delayedCall(1000, gameOver, [], this);
       }
-
       isSuspended = this.physics.world.overlap(this.player, priseGroup);
-
 }
 
 giveStrenght = function (gameObject1, gameObject2) {
@@ -408,6 +396,8 @@ priseAte = function (gameObject1, gameObject2) {
       // globaliseThis.physics.moveToObject(gameObject2, gameObject1, 50);
       // gameObject2.disableBody();
       gameObject2.play("disap");
+      slimePart++;
+      updateSlimeCount();
       gameObject2.disableBody();
       if(gameObject2.isAte != true){
             gameObject2.isAte = true;
@@ -427,6 +417,7 @@ gameOver = function () {
 cooldownBonus = function (bonus){
       playerConfig.skills[bonus] = true;
       console.log("bonus " + bonus + " is back");
+      this.time.delayedCall(1000, removeTimerBox, [], this);
 }
 
 

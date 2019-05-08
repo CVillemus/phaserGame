@@ -16,6 +16,9 @@ body{
       background-color: #FFF;
 }
 
+.btn--scoreH{color: red;}
+.btn--scoreP{color: goldenrod}
+
 .btn--pause{
       position: absolute;
       right: 0;
@@ -33,6 +36,29 @@ body{
 .btn--prev:hover{
       background-color: grey;
       transition: 200ms ease;
+}
+
+.btn--cd{
+      background-color: #FFF;
+      position: absolute;
+      right: 0%;
+      top: 50%;
+}
+
+.btn--cdone{
+      transform: translateY(-100%);
+}
+
+.btn--sp{
+      position: absolute;
+      left :0;
+      top: 60px;
+      margin: 20px;
+      background-color: #FFF;
+}
+
+.btn--cdtwo{
+      transform: translateY(50%);
 }
 
 .box{

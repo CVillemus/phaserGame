@@ -11,9 +11,19 @@ var dom = {
       boxLoader: document.getElementById("boxLoader"),
       onBoarding: document.getElementById("onBoarding"),
       onBoardingBtnBefore: document.querySelector("#onBoarding .btn--prev"),
+      cooldownBox1: document.getElementById("cooldownBox1"),
+      cooldownBox2: document.getElementById("cooldownBox2"),
+      slimeCount: document.getElementById("slimeCountContainer"),
+
+      slimePartWon: document.getElementById("slimePartWon"),
+      totalSlimePartWon: document.getElementById("totalSlimePartWon")
 }
 
 let isPause = false;
+let slimePart = 0;
+
+let scoreBoard;
+let scoreValue;
 
 dom.pause.addEventListener('click', togglePause);
 function togglePause() {
@@ -28,6 +38,30 @@ function togglePause() {
       }
 }
 
+showTimerBox = function showTimerBox(){
+      cooldownBox1.classList.remove("dn");
+}
+
+removeTimerBox = function removeTimerBox(){
+      cooldownBox1.classList.add("dn");
+}
+
+function updateSlimeCount(){
+      dom.slimeCount.innerHTML = slimePart;
+}
+
+function updateGlobalSlimeCount() {
+      slimeStorageCount = localStorage.getItem('slimeStorageCount');
+      if (slimeStorageCount == "null") {
+            localStorage.setItem('slimeStorageCount', slimePart);
+      } else {
+            slimeStorageCount = Number(slimeStorageCount);
+            slimeStorageCount += slimePart;
+            localStorage.setItem('slimeStorageCount', slimeStorageCount);
+      }
+      console.log(slimeStorageCount);
+}
+
 function showDeadMenue() {
       dom.loseBox.classList.remove("dn");
       fillDeadMenue();
@@ -35,9 +69,12 @@ function showDeadMenue() {
 }
 
 function fillDeadMenue() {
+      updateGlobalSlimeCount();
       dom.actualScore.innerHTML = scoreBoard;
       getBestScore();
       dom.bestScore.innerHTML = bestScore;
+      dom.slimePartWon.innerHTML = slimePart;
+      dom.totalSlimePartWon.innerHTML = slimeStorageCount;
 }
 
 function getBestScore() {
@@ -57,7 +94,7 @@ function displayCurrentScore(){
 }
 
 function showNewBestScore() {
-      bestScoreMessage.innerHTML = "Nouveau meilleur score !";
+      dom.bestScoreMessage.innerHTML = "Nouveau meilleur score !";
 }
 
 
