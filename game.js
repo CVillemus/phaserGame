@@ -4,6 +4,17 @@ var screenSize = {
       height: window.innerHeight
 }
 
+window.addEventListener('resize', function(){
+      if (isPause == false){
+            togglePause();
+      }
+      screenSize = {
+            width: window.innerWidth,
+            height: window.innerHeight
+      }
+      // globaliseThis.resize(screenSize.width, screenSize.height); 
+})
+
 var config = {
       type: Phaser.AUTO,
       parent: 'phaser-example',
@@ -27,7 +38,6 @@ var config = {
 
 
 // Local storage uses
-var bestScore;
 var game = new Phaser.Game(config);
 
 
@@ -79,23 +89,29 @@ function initPlayer() {
       playerConfig = {
             skills : {
                   superStrenght: true,
-                  stickySlime: false,
-                  elasticSlime: false,
+                  stickySlime: true,
+                  elasticSlime: true,
                   dobJump: false,
             }
       };
+      
 }
 
-
+let walls = ['surface_broken', 'surface_caution', 'surface_classic', 'surface_dead', 'surface_paint'];
 
 let highElements = [];
 
 // Bonus CD
 const cooldown = 10;
 var cooldownSuperStrenght;
-var cooldownStickySlime;
 var cooldownDobJump;
+var cooldownElasticSlime;
 
+var borderRight;
+var borderLeft;
+var hitBorderRight;
+var hitBorderLeft;
+var borderBot; 
 
 function preload() {
 
@@ -108,11 +124,19 @@ function preload() {
       this.load.atlas('playerTop', 'custom/slimeAnim/slimeAnim.png', 'custom/slimeAnim/slimeAnim.json');
       this.load.atlas('prise', 'custom/prises/prise.png', 'custom/prises/prise.json')
 
-      this.load.image('topImage', 'custom/top.jpg');
-      this.load.image('botImage', 'custom/bottom.jpg');
-      this.load.image('centerImage', 'custom/center.jpg');
-      this.load.image('bgCenter', 'custom/fullW.png');
-      
+      this.load.image('surface_classic', 'custom/bocal/bocal_classic.png');
+
+      this.load.image('surface_caution', 'custom/bocal/bocal_caution.png');
+      this.load.image('surface_dead', 'custom/bocal/bocal_dead.png');
+      this.load.image('surface_paint', 'custom/bocal/bocal_paint.png');
+      this.load.image('surface_broken', 'custom/bocal/bocal_broken.png');
+
+      this.load.image('surface_bottom', 'custom/bocal/bocal_bottom.png');
+      // this.load.image('botImage', 'custom/bocal/bocal_classic.png');
+      // this.load.image('centerImage', 'custom/bocal/bocal_classic.png');
+      this.load.image('background', 'custom/background.png');
+      this.load.image('desk', 'custom/desk.png');
+      this.load.image('enemy', 'custom/enemy.png')
       
       // audio
       // this.load.audio('Catch1', ['custom/sound/player' + playerConfig.skin + 'Catch1.ogg', 'custom/sound/player' + playerConfig.skin + 'Catch1.mp3']);
@@ -134,13 +158,26 @@ function create() {
       isOver = false;
       isflying = false;
 
-      bgCenter = this.add.sprite(center - 1100, window.innerHeight, 'bgCenter');
+      background = this.add.sprite(center - 1100, screenSize.height, 'background');
+      
 
+      borderRight = this.add.zone(center + 300, screenSize.height, 10, screenSize.height);
+      borderLeft = this.add.zone(center - 300, screenSize.height, 10, screenSize.height);
+      borderBot = this.add.zone(center, screenSize.height + 200, screenSize.width, 10)
+
+      this.physics.world.enable(borderRight);
+      this.physics.world.enable(borderLeft);
+      this.physics.world.enable(borderBot);
+      borderRight.body.setImmovable(true);
+      borderLeft.body.setImmovable(true);
+      borderBot.body.setImmovable(true);
       // Background repeat
-      up = this.add.sprite(center, window.innerHeight - 1300, 'topImage').setOrigin(0.5);
-      bot = this.add.sprite(center, window.innerHeight - 2600, 'botImage').setOrigin(0.5);
-      middle = this.add.sprite(center, window.innerHeight, 'centerImage').setOrigin(0.5);
-      highElements.push(up, bot, middle);
+      desk = this.add.sprite(center + 200, screenSize.height + 1000, 'desk');
+      surface1 = this.add.sprite(center, screenSize.height - 1145, 'surface_classic').setOrigin(0.5);
+      surface2 = this.add.sprite(center, screenSize.height - 2145, 'surface_classic').setOrigin(0.5);
+      surface3 = this.add.sprite(center, screenSize.height - 145, 'surface_bottom').setOrigin(0.5);
+      
+      highElements.push(surface1, surface2, surface3);
 
       // Init songs
       // jump1 = this.sound.add('Jump1');
@@ -154,7 +191,14 @@ function create() {
       }
       priseElements = priseGroup.getChildren();
 
-      this.player = this.physics.add.sprite(center, screenSize.height, 'playerTop', 'Slime_Stall_00000.png').setCircle(50).setOffset(50).setScale(0.9).setInteractive();
+      this.player = this.physics.add.sprite(center, screenSize.height, 'playerTop', 'Slime_Stall_00000.png').setCircle(50).setOffset(50).setScale(0.9).setBounce(0.9).setInteractive();
+     
+
+      
+
+      this.physics.add.collider(this.player, borderRight, hitGlass);
+      this.physics.add.collider(this.player, borderLeft, hitGlass);
+      this.physics.add.collider(this.player, borderBot, gameOver);
 
       this.anims.create({
             key: 'stall',
@@ -187,7 +231,7 @@ function create() {
             frameRate: 20,
       });
 
-      // this.player.play("stall");
+      this.player.play("stall");
       
       scoreValue = this.player.y - screenSize.height;
 
@@ -239,7 +283,8 @@ function create() {
                   } else if (playerConfig.skills.stickySlime && disabDobJump == false){
                         playerConfig.skills.stickySlime = false;
                         isStick = true;
-                        cooldownStickySlime = this.time.delayedCall(cooldown * 1000, cooldownBonus, ["stickySlime"], this);
+                        //cooldownStickySlime = this.time.delayedCall(cooldown * 1000, cooldownBonusUp, ["stickySlime"], this);
+                        bonusGone("stickySlime");
                   }
                   d = 0;
             }
@@ -248,8 +293,8 @@ function create() {
                   this.player.body.setVelocityY(-600);
                   this.player.setGravityY(350);
                   playerConfig.skills.dobJump = false;
-                  cooldownDobJump = this.time.delayedCall(cooldown * 1000, cooldownBonus, ["dobJump"], this);
-                  
+                  // cooldownDobJump = this.time.delayedCall(cooldown * 1000, cooldownBonusUp, ["dobJump"], this);
+                  bonusGone("dobJump");
             }
 
             this.input.on('pointermove', function (pointer, currentlyOver) {
@@ -277,6 +322,8 @@ function create() {
                   deg = rad * (180 / Math.PI);
                   rad = rad - Math.PI;
 
+                  
+
                   if (deg > 270 && deg < 360 || deg > 0 && deg < 75) {
                         //jump direction left
 
@@ -286,6 +333,7 @@ function create() {
                   } else {
                         //jump direction right
                   }
+                  
 
                   d = Phaser.Math.Distance.Between(pcx, pcy, prx, pry);
                   rad = Phaser.Math.Angle.Between(prx, pry, pcx, pcy);
@@ -298,7 +346,8 @@ function create() {
                   if (isflying == false) {
                         if (playerConfig.skills.superStrenght) {
                               playerConfig.skills.superStrenght = false;
-                              cooldownSuperStrenght = this.time.delayedCall(cooldown * 1000, cooldownBonus, ["superStrenght"], this);
+                              // cooldownSuperStrenght = this.time.delayedCall(cooldown * 1000, cooldownBonusUp, ["superStrenght"], this);
+                              bonusGone("superStrenght");
                         }
 
                         else if (d == 150) {
@@ -306,6 +355,7 @@ function create() {
                         } else {
                               // son selon puissance faible
                         }
+
                         disabDobJump = false;
                         velocityFromRotation(rad, str, velocity);
                         this.player.setVelocity(velocity.x, velocity.y);
@@ -318,22 +368,22 @@ function create() {
 
 
 function update() {
-      // TRES BROUILLON
-      if (cooldownSuperStrenght != undefined){
-            showTimerBox();
-            cooldownBox1.innerHTML = cooldown - cooldownSuperStrenght.getElapsedSeconds().toString().substr(0, 2);
-            if (cooldownSuperStrenght.getProgress().toString() == 1){
-                  cooldownSuperStrenght = undefined;
-            }
-      }
-
       
+
+      // this.enemy = this.physics.add.sprite(center, 500, 'enemy').setCircle(100).setOffset(50, 25).setScale(0.2).setInteractive();
+      // this.enemy.setGravityY(700);
+
+      // ALSOTHERE
+      this.physics.world.overlap(this.player, this.enemy, cutPlayer);
+
       this.cameras.main.centerOn(this.player.x, this.player.y - 100);
 
-      // Place l'arrière plan
-      bgCenter.setPosition(screenSize.width / 2, this.cameras.main.scrollY + screenSize.height / 2);
+      // Et les rebords
+      background.setPosition(screenSize.width / 2, this.cameras.main.scrollY + screenSize.height / 2 + 40);
+      borderRight.setPosition(center + 280, this.cameras.main.scrollY + screenSize.height / 2);
+      borderLeft.setPosition(center - 280, this.cameras.main.scrollY + screenSize.height / 2)
 
-      // Score
+
       if (this.player.y - screenSize.height < scoreValue) {
             scoreValue = this.player.y - screenSize.height;
       }
@@ -343,6 +393,11 @@ function update() {
       }
       scoreBoard = scoreBoard / 10;
       scoreBoard = Math.trunc(scoreBoard);
+
+      if (scoreBoard > bestScore){
+            sendCongratMessage();
+      }
+
       displayCurrentScore();
 
       priseElements.forEach(ele => {
@@ -361,12 +416,17 @@ function update() {
 
       // Update fond de grimpe
       highElements.forEach(ele => {
-            if (ele.y - 1300 > this.cameras.main.scrollY + screenSize.height) {
-                  ele.setPosition(center, this.cameras.main.scrollY - 500 - screenSize.height);
+            if (ele.y > this.cameras.main.scrollY + screenSize.height + 1500) {
+                  ele.setPosition(center, ele.y - 3000); // - screenSize.height);
+                  ele.setTexture('surface_classic');
+                  
+                  ele.setTexture(walls[Phaser.Math.Between(0, walls.length - 1)])
+                  console.log("change");
             }
       });
 
       this.player.body.velocity.y < 4 && this.player.body.velocity.y > -4 ? isflying = false : isflying = true;
+
 
       if (this.player.body.velocity.y > 600) {
             if (deadSoundProgress == false) {
@@ -387,14 +447,7 @@ function update() {
       isSuspended = this.physics.world.overlap(this.player, priseGroup);
 }
 
-giveStrenght = function (gameObject1, gameObject2) {
-      isStrenght = true;
-      // playerConfig.boost = 'superStrenght';
-}
-
 priseAte = function (gameObject1, gameObject2) {
-      // globaliseThis.physics.moveToObject(gameObject2, gameObject1, 50);
-      // gameObject2.disableBody();
       gameObject2.play("disap");
       slimePart++;
       updateSlimeCount();
@@ -405,20 +458,59 @@ priseAte = function (gameObject1, gameObject2) {
                   gameObject2.isAte = false;
             });
       }
-      // globaliseThis.physics.moveToObject(gameObject1, gameObject2, 200);
 }
 
 // Pause + Lance les actions sous-jacentes
-gameOver = function () {
+hitGlass = function () {
+      if(playerConfig.skills.elasticSlime){
+            playerConfig.skills.elasticSlime = false;
+            bonusGone("elasticSlime");
+      }else{
+            globaliseThis.time.delayedCall(100, gameOver, [], this);
+      }
+}
+
+gameOver = function gameOver() {
       globaliseThis.scene.pause();
       showDeadMenue();
 }
 
-cooldownBonus = function (bonus){
-      playerConfig.skills[bonus] = true;
-      console.log("bonus " + bonus + " is back");
-      this.time.delayedCall(1000, removeTimerBox, [], this);
+var timerStart = false;
+
+bonusGone = function cooldownBonusGone(bonus){
+      playerConfig.skills[bonus] = false;
+      globaliseThis.time.delayedCall(cooldown * 1000, bonusUp, [bonus], this);
+      timerStart = true;
 }
+
+
+bonusUp = function (bonus){
+      playerConfig.skills[bonus] = true;
+      timerStart = false;
+}
+
+cutPlayer = function cutPlayer(){
+      globaliseThis.time.delayedCall(100, gameOver, [], this); 
+}
+
+sendCongratMessage = function sendCongratMessage(){
+      appearCongratMessage();
+      // Faire apparaitre le message;
+      // cooldown qui le fait disparaitre;
+}
+
+enemySlime = function enemySlime(){
+      // 0 = 0 prob
+      // 10 000 = 1 obligé
+
+      // this.enemy = this.physics.add.sprite(center, 500, 'enemy').setCircle(100).setOffset(50, 25).setScale(0.2).setInteractive();
+      globaliseThis.time.delayedCall(100, gameOver, [], this)
+      // this.enemy.setGravityY(700);
+
+}
+
+
+
 
 
 

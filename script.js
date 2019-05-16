@@ -11,12 +11,13 @@ var dom = {
       boxLoader: document.getElementById("boxLoader"),
       onBoarding: document.getElementById("onBoarding"),
       onBoardingBtnBefore: document.querySelector("#onBoarding .btn--prev"),
-      cooldownBox1: document.getElementById("cooldownBox1"),
-      cooldownBox2: document.getElementById("cooldownBox2"),
+      // cooldownBox1: document.getElementById("cooldownBox1"),
+      // cooldownBox2: document.getElementById("cooldownBox2"),
       slimeCount: document.getElementById("slimeCountContainer"),
 
       slimePartWon: document.getElementById("slimePartWon"),
-      totalSlimePartWon: document.getElementById("totalSlimePartWon")
+      totalSlimePartWon: document.getElementById("totalSlimePartWon"),
+      newBestScoreBox: document.getElementById("newBestScoreBox")
 }
 
 let isPause = false;
@@ -38,17 +39,13 @@ function togglePause() {
       }
 }
 
-showTimerBox = function showTimerBox(){
-      cooldownBox1.classList.remove("dn");
-}
 
-removeTimerBox = function removeTimerBox(){
-      cooldownBox1.classList.add("dn");
-}
 
 function updateSlimeCount(){
       dom.slimeCount.innerHTML = slimePart;
 }
+
+
 
 function updateGlobalSlimeCount() {
       slimeStorageCount = localStorage.getItem('slimeStorageCount');
@@ -59,7 +56,16 @@ function updateGlobalSlimeCount() {
             slimeStorageCount += slimePart;
             localStorage.setItem('slimeStorageCount', slimeStorageCount);
       }
-      console.log(slimeStorageCount);
+}
+
+function appearCongratMessage(){
+      newBestScoreBox.classList.remove("dn");
+      globaliseThis.time.delayedCall(3000, disapearCongratMessage, [], this);
+}
+
+
+function disapearCongratMessage(){
+      newBestScoreBox.classList.add("dn");
 }
 
 function showDeadMenue() {
@@ -77,8 +83,9 @@ function fillDeadMenue() {
       dom.totalSlimePartWon.innerHTML = slimeStorageCount;
 }
 
+var bestScore = localStorage.getItem('bestScore');
+
 function getBestScore() {
-      bestScore = localStorage.getItem('bestScore');
       if (bestScore == "null") {
             localStorage.setItem('bestScore', scoreBoard);
       }
