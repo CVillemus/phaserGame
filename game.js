@@ -18,7 +18,7 @@ window.addEventListener('resize', function(){
 var config = {
       type: Phaser.AUTO,
       parent: 'phaser-example',
-      backgroundColor: '#6bf',
+      backgroundColor: '#000',
       width: screenSize.width,
       height: screenSize.height,
 
@@ -83,8 +83,15 @@ const randomWidth = [
       center + 200,
 ]
 
+let isBestScoreBoxDisplayed;
+
 initPlayer();
 
+
+initGame();
+function initGame(){
+      isBestScoreBoxDisplayed = false;
+}
 function initPlayer() {
       playerConfig = {
             skills : {
@@ -97,7 +104,7 @@ function initPlayer() {
       
 }
 
-let walls = ['surface_broken', 'surface_caution', 'surface_classic', 'surface_dead', 'surface_paint'];
+const walls = ['surface_broken', 'surface_caution', 'surface_classic', 'surface_dead', 'surface_paint'];
 
 let highElements = [];
 
@@ -147,6 +154,8 @@ function preload() {
 function create() {
       
       initPlayer();
+      initGame();
+
       deadSoundProgress = false;
 
 
@@ -394,7 +403,8 @@ function update() {
       scoreBoard = scoreBoard / 10;
       scoreBoard = Math.trunc(scoreBoard);
 
-      if (scoreBoard > bestScore){
+      if (scoreBoard > bestScore && isBestScoreBoxDisplayed == false){
+            isBestScoreBoxDisplayed = true;
             sendCongratMessage();
       }
 
@@ -508,6 +518,7 @@ enemySlime = function enemySlime(){
       // this.enemy.setGravityY(700);
 
 }
+
 
 
 

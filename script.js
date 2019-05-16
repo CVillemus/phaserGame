@@ -59,13 +59,16 @@ function updateGlobalSlimeCount() {
 }
 
 function appearCongratMessage(){
-      newBestScoreBox.classList.remove("dn");
-      globaliseThis.time.delayedCall(3000, disapearCongratMessage, [], this);
+      dom.newBestScoreBox.classList.remove("dn");
+      console.log("goes");
+      setTimeout(() => {
+            disapearCongratMessage();
+      }, 3000);
 }
 
 
-function disapearCongratMessage(){
-      newBestScoreBox.classList.add("dn");
+disapearCongratMessage = function disapearCongratMessage(){
+      dom.newBestScoreBox.classList.add("dn");
 }
 
 function showDeadMenue() {

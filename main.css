@@ -8,6 +8,27 @@ body{
       border: 0;
 }
 
+.bestScoreMessage{
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 30px;
+      padding: 6px 40px;
+      font-size: 22px;
+      background-color: #FFF;
+      animation: 2s appear ease-in;
+}
+
+@keyframes appear{
+      0%{
+            transform: translate(-50%, -10px);
+            opacity: 0;
+      }
+      100%{
+            transform: translate(-50%, 0);
+            opacity: 100%;  
+      }
+}
 .btn--score{
       position: absolute;
       left :0;
