@@ -1,39 +1,41 @@
 
 var dom = {
       loseBox: document.getElementById("loseBox"),
+      winBox: document.getElementById("winBox"),
+
       deadOrigin: document.getElementById("containerDeadOrigin"),
       actualScore: document.getElementById("containerActualScore"),
       bestScore: document.getElementById("containerBestScore"),
       bestScoreMessage: document.getElementById("containerBestScoreMessage"),
       pause: document.getElementById("buttonGamePause"),
-      retry: document.getElementById("buttonGameRetry"),
+      actionBtn: document.querySelectorAll("[data-action-box]"),
       scoreBox: document.getElementById("scoreBox"),
       boxLoader: document.getElementById("boxLoader"),
-      onBoarding: document.getElementById("onBoarding"),
-      onBoardingBtnBefore: document.querySelector("#onBoarding .btn--prev"),
       // cooldownBox1: document.getElementById("cooldownBox1"),
       // cooldownBox2: document.getElementById("cooldownBox2"),
       slimeCount: document.getElementById("slimeCountContainer"),
-
       slimePartWon: document.getElementById("slimePartWon"),
       totalSlimePartWon: document.getElementById("totalSlimePartWon"),
       newBestScoreBox: document.getElementById("newBestScoreBox")
 }
 
-let isPause = false;
+let isPause = true;
 let slimePart = 0;
 
 let scoreBoard;
 let scoreValue;
 
+for (let index = 0; index < dom.actionBtn.length; index++) {
+      dom.actionBtn[index].addEventListener("click", restartGame)
+}
 dom.pause.addEventListener('click', togglePause);
 function togglePause() {
       if (isPause) {
-            globaliseThis.scene.resume();
+            mainScene.scene.resume();
             dom.pause.innerHTML = "Pause";
             isPause = false;
       } else {
-            globaliseThis.scene.pause();
+            mainScene.scene.pause();
             dom.pause.innerHTML = "Play";
             isPause = true;
       }
@@ -43,6 +45,10 @@ function togglePause() {
 
 function updateSlimeCount(){
       dom.slimeCount.innerHTML = slimePart;
+}
+
+showWinScreen = function(){
+      dom.winBox.classList.remove("dn");
 }
 
 
@@ -74,7 +80,10 @@ disapearCongratMessage = function disapearCongratMessage(){
 function showDeadMenue() {
       dom.loseBox.classList.remove("dn");
       fillDeadMenue();
-      dom.retry.addEventListener("click", restartGame);
+}
+
+function showWinMenue() {
+      dom.winBox.classList.remove("dn");
 }
 
 function fillDeadMenue() {
@@ -108,16 +117,15 @@ function showNewBestScore() {
 }
 
 
-function closeDeadMenue() {
-      dom.loseBox.classList.add("dn");
-}
 
 function restartGame() {
-      globaliseThis.scene.restart();
-      closeDeadMenue();
+      let parentBox = this.closest("[data-type='box']");
+      let actionType = this.getAttribute("data-action-box");
+      parentBox.classList.add("dn");
+      if (actionType == "retry") {
+            mainScene.scene.restart();
+      } else if (actionType == "play") {
+            togglePause();
+      }
 }
-
-dom.onBoardingBtnBefore.addEventListener("click", toggleOnboarding)
-function toggleOnboarding() {
-      dom.onBoarding.classList.toggle("dn");
-}   
+  

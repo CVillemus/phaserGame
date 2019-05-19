@@ -15,6 +15,7 @@
             <span id="cooldownBox1" class="btn btn--cd btn--cdone">10</span>
             <span id="cooldownBox2" class="btn btn--cd btn--cdtwo">10</span>
       </div> -->
+
       <div id="newBestScoreBox" class="bestScoreMessage dn">
             <p>New best score !</p>
       </div>
@@ -23,13 +24,13 @@
             <p>C'est moche, c'est normal ça a pas chargé et j'ai encore rien designer pour ce loader. Donc c'est moche.</p>
       </div>
       
-      <div id="onBoarding" class="box box--onboarding box--center">
+      <div data-type='box' class="box box--onboarding box--center">
             <h2>Salut DWM !</h2>
             <p>Pour <b>déplacer le slime</b>, drag le slime vers le bas de manière à charger un saut et relâche la pression.</p>
             <p>Les bouts de slime sont des prises, <b>pour t'agriper</b>, appuie dessus quand ton slime la survolera, surtout ne relâche pas le doigt avant de charger ton prochain saut.</p>
             <p>Have fun - N'oubliez pas que le projet est encore en développement et est <b>optimisé pour mobile.</b></p>
             <div class="tac">
-                  <button class="btn btn--prev">Fermer</button>
+                  <button data-action-box='play' class="btn btn--prev">Fermer</button>
             </div>
       </div>
       <div class="btn btn--score">
@@ -37,7 +38,7 @@
             <span class="btn--scoreP" id="slimeCountContainer">0</span>
       </div>
       <button id="buttonGamePause" class="btn btn--pause">Pause</button>
-      <div class="box box--center box--lose dn" id="loseBox">
+      <div data-type='box' class="box box--center box--lose dn" id="loseBox">
             <h2>You lose !</h2>
             <!-- <p>You died from: <span id="containerDeadOrigin"></span></p> -->
             <p>Score:<span id="containerActualScore">1</span></p>
@@ -45,7 +46,15 @@
             <p>SlimePart won:<span id="slimePartWon">0</span></p>
             <p>Total SlimePart:<span id="totalSlimePartWon">0</span></p>
             <div class="tac">
-                  <button id="buttonGameRetry" class="btn btn--restart">Restart</button>
+                  <button data-action-box='retry' class="btn btn--restart">Restart</button>
+            </div>
+      </div>
+
+      <div data-type='box' class="box box--center box--lose dn" id="winBox">
+            <h3>Félicitation !</h3>
+            <p>Votre slime s'est échappé de l'incubateur !</p>
+            <div class="tac">
+                  <button data-action-box='retry' class="btn btn--restart">Restart</button>
             </div>
       </div>
       <script src="script.js"></script>

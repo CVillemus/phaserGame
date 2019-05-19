@@ -12,8 +12,13 @@ window.addEventListener('resize', function(){
             width: window.innerWidth,
             height: window.innerHeight
       }
-      // globaliseThis.resize(screenSize.width, screenSize.height); 
+      // mainScene.resize(screenSize.width, screenSize.height); 
 })
+const scene = new Phaser.Scene("Game");
+scene.preload = preload;
+scene.create = create;
+scene.update = update;
+
 
 var config = {
       type: Phaser.AUTO,
@@ -25,23 +30,22 @@ var config = {
       physics: {
             default: 'arcade',
             arcade: {
-                  debug: false,
+                  debug: true,
             }
       },
-      scene: {
-            preload: preload,
-            create: create,
-            update: update
-      }
-
+      scene
 };
 
 
 // Local storage uses
 var game = new Phaser.Game(config);
 
+var mainScene;
 
 
+
+
+let isCheat = true;
 
 // Joueur
 var isSuspended;
@@ -67,8 +71,10 @@ var deadSoundProgress;
 var isOver;
 var isHit;
 var isflying = false;
+var isTheTop = false;
+var isNoMorePrise = false;
 
-var globaliseThis;
+
 
 const center = screenSize.width / 2;
 const randomWidth = [
@@ -84,13 +90,18 @@ const randomWidth = [
 ]
 
 let isBestScoreBoxDisplayed;
-
+let isWon = false;
+let stopGenerate = false
 initPlayer();
 
 
 initGame();
 function initGame(){
+      stopGenerate = false;
+      isWon = false;
       isBestScoreBoxDisplayed = false;
+      isTheTop = false;
+      isNoMorePrise = false;
 }
 function initPlayer() {
       playerConfig = {
@@ -119,31 +130,36 @@ var borderLeft;
 var hitBorderRight;
 var hitBorderLeft;
 var borderBot; 
+var succesTop; 
+var countHeight = 0;
 
 function preload() {
 
       // Loader
       this.load.once('progress', function (progress) { console.log(progress)});
-      this.load.on('complete', function () {dom.boxLoader.classList.add("dn")});
+      this.load.on('complete', function () {
+            dom.boxLoader.classList.add("dn");
+            mainScene = game.scene.getScene("Game");
+
+      });
 
       // this.load.setPath('assets/sprites/');
 
-      this.load.atlas('playerTop', 'custom/slimeAnim/slimeAnim.png', 'custom/slimeAnim/slimeAnim.json');
-      this.load.atlas('prise', 'custom/prises/prise.png', 'custom/prises/prise.json')
+      this.load.atlas('playerTop', 'custom/images/slimeAnim/slimeAnim.png', 'custom/images/slimeAnim/slimeAnim.json');
+      this.load.atlas('prise', 'custom/images/prises/prise.png', 'custom/images/prises/prise.json')
 
-      this.load.image('surface_classic', 'custom/bocal/bocal_classic.png');
+      this.load.image('surface_classic', 'custom/images/bocal_classic.png');
+      this.load.image('surface_top', 'custom/images/bocal_top.png');
+      this.load.image('surface_caution', 'custom/images/bocal_caution.png');
+      this.load.image('surface_dead', 'custom/images/bocal_dead.png');
+      this.load.image('surface_paint', 'custom/images/bocal_paint.png');
+      this.load.image('surface_broken', 'custom/images/bocal_broken.png');
 
-      this.load.image('surface_caution', 'custom/bocal/bocal_caution.png');
-      this.load.image('surface_dead', 'custom/bocal/bocal_dead.png');
-      this.load.image('surface_paint', 'custom/bocal/bocal_paint.png');
-      this.load.image('surface_broken', 'custom/bocal/bocal_broken.png');
-
-      this.load.image('surface_bottom', 'custom/bocal/bocal_bottom.png');
-      // this.load.image('botImage', 'custom/bocal/bocal_classic.png');
-      // this.load.image('centerImage', 'custom/bocal/bocal_classic.png');
-      this.load.image('background', 'custom/background.png');
-      this.load.image('desk', 'custom/desk.png');
-      this.load.image('enemy', 'custom/enemy.png')
+      this.load.image('topSurface', 'custom/images/bocal_topFront.png');
+      this.load.image('surface_bottom', 'custom/images/bocal_bottom.png');
+      this.load.image('background', 'custom/images/background.png');
+      this.load.image('desk', 'custom/images/desk.png');
+      this.load.image('enemy', 'custom/images/enemy.png')
       
       // audio
       // this.load.audio('Catch1', ['custom/sound/player' + playerConfig.skin + 'Catch1.ogg', 'custom/sound/player' + playerConfig.skin + 'Catch1.mp3']);
@@ -152,14 +168,13 @@ function preload() {
 
 
 function create() {
-      
+
       initPlayer();
       initGame();
 
       deadSoundProgress = false;
 
-
-      globaliseThis = this;
+      
 
       isSuspended = true;
       // isUnderRock = false;
@@ -173,6 +188,7 @@ function create() {
       borderRight = this.add.zone(center + 300, screenSize.height, 10, screenSize.height);
       borderLeft = this.add.zone(center - 300, screenSize.height, 10, screenSize.height);
       borderBot = this.add.zone(center, screenSize.height + 200, screenSize.width, 10)
+      
 
       this.physics.world.enable(borderRight);
       this.physics.world.enable(borderLeft);
@@ -182,11 +198,12 @@ function create() {
       borderBot.body.setImmovable(true);
       // Background repeat
       desk = this.add.sprite(center + 200, screenSize.height + 1000, 'desk');
-      surface1 = this.add.sprite(center, screenSize.height - 1145, 'surface_classic').setOrigin(0.5);
-      surface2 = this.add.sprite(center, screenSize.height - 2145, 'surface_classic').setOrigin(0.5);
-      surface3 = this.add.sprite(center, screenSize.height - 145, 'surface_bottom').setOrigin(0.5);
+
+      this.surface1 = this.add.sprite(center, screenSize.height - 1145, 'surface_classic').setOrigin(0.5);
+      this.surface2 = this.add.sprite(center, screenSize.height - 2145, 'surface_classic').setOrigin(0.5);
+      this.surface3 = this.add.sprite(center, screenSize.height - 145, 'surface_bottom').setOrigin(0.5);
       
-      highElements.push(surface1, surface2, surface3);
+      highElements.push(this.surface1, this.surface2, this.surface3);
 
       // Init songs
       // jump1 = this.sound.add('Jump1');
@@ -200,9 +217,9 @@ function create() {
       }
       priseElements = priseGroup.getChildren();
 
+      
       this.player = this.physics.add.sprite(center, screenSize.height, 'playerTop', 'Slime_Stall_00000.png').setCircle(50).setOffset(50).setScale(0.9).setBounce(0.9).setInteractive();
-     
-
+      this.player.setVelocityY(-500);
       
 
       this.physics.add.collider(this.player, borderRight, hitGlass);
@@ -240,7 +257,7 @@ function create() {
             frameRate: 20,
       });
 
-      this.player.play("stall");
+      // this.player.play("stall");
       
       scoreValue = this.player.y - screenSize.height;
 
@@ -272,47 +289,53 @@ function create() {
       var graphics;
       var disabDobJump = true;
       var isStick = false;
+      
+      var palier = 0;
+      var maxPalier = 10;
 
+      
 
       this.player.on('pointerdown', function (pointer, localX, localY) {
-            cursorCharDown = true;
-            
-            pcx = this.player.x;
-            pcy = this.player.y;
+            if(isPause == false && isWon == false){
+                  cursorCharDown = true;
 
-            graphics = this.add.graphics({ lineStyle: { width: 3, color: 0xaa00aa } });
-            lineStr = new Phaser.Geom.Line(pcx, pcy, pointer.worldX, pointer.worldY);
-            
-            if (isSuspended || playerConfig.skills.stickySlime) {    
-                  this.player.setGravityY(0);
-                  this.player.setVelocity(0);
-                  if(isSuspended){
-                        this.physics.world.overlap(this.player, priseGroup, priseAte);
-                        disabDobJump = true;
-                  } else if (playerConfig.skills.stickySlime && disabDobJump == false){
-                        playerConfig.skills.stickySlime = false;
-                        isStick = true;
-                        //cooldownStickySlime = this.time.delayedCall(cooldown * 1000, cooldownBonusUp, ["stickySlime"], this);
-                        bonusGone("stickySlime");
+                  pcx = this.player.x;
+                  pcy = this.player.y;
+
+                  graphics = this.add.graphics({ lineStyle: { width: 6, color: 0x08C455 } });
+                  lineStr = new Phaser.Geom.Line(pcx, pcy, pointer.worldX, pointer.worldY);
+
+                  if (isSuspended || playerConfig.skills.stickySlime) {
+                        this.player.setGravityY(0);
+                        this.player.setVelocity(0);
+                        if (isSuspended) {
+                              this.physics.world.overlap(this.player, priseGroup, priseAte);
+                              disabDobJump = true;
+                        } else if (playerConfig.skills.stickySlime && disabDobJump == false) {
+                              playerConfig.skills.stickySlime = false;
+                              isStick = true;
+                              //cooldownStickySlime = this.time.delayedCall(cooldown * 1000, cooldownBonusUp, ["stickySlime"], this);
+                              bonusGone("stickySlime");
+                        }
+                        d = 0;
                   }
-                  d = 0;
-            }
 
-            if (playerConfig.skills.dobJump && disabDobJump == false) {
-                  this.player.body.setVelocityY(-600);
-                  this.player.setGravityY(350);
-                  playerConfig.skills.dobJump = false;
-                  // cooldownDobJump = this.time.delayedCall(cooldown * 1000, cooldownBonusUp, ["dobJump"], this);
-                  bonusGone("dobJump");
-            }
-
-            this.input.on('pointermove', function (pointer, currentlyOver) {
-                  if (cursorCharDown && disabDobJump == true || cursorCharDown && isStick) {
-                        lineStr.setTo(pcx, pcy, pointer.worldX, pointer.worldY);
-                        graphics.clear();
-                        graphics.strokeLineShape(lineStr);
+                  if (playerConfig.skills.dobJump && disabDobJump == false) {
+                        this.player.body.setVelocityY(-600);
+                        this.player.setGravityY(350);
+                        playerConfig.skills.dobJump = false;
+                        // cooldownDobJump = this.time.delayedCall(cooldown * 1000, cooldownBonusUp, ["dobJump"], this);
+                        bonusGone("dobJump");
                   }
-            }); 
+
+                  this.input.on('pointermove', function (pointer, currentlyOver) {
+                        if (cursorCharDown && disabDobJump == true || cursorCharDown == true && isStick && isPause == false && isWon == false) {
+                              lineStr.setTo(pcx, pcy, pointer.worldX, pointer.worldY);
+                              graphics.clear();
+                              graphics.strokeLineShape(lineStr);
+                        }
+                  }); 
+            }       
       }, this);
 
 
@@ -373,24 +396,32 @@ function create() {
             cursorCharDown = false;
 
       }, this);  
+
 }
 
 
 function update() {
-      
+
 
       // this.enemy = this.physics.add.sprite(center, 500, 'enemy').setCircle(100).setOffset(50, 25).setScale(0.2).setInteractive();
       // this.enemy.setGravityY(700);
 
       // ALSOTHERE
       this.physics.world.overlap(this.player, this.enemy, cutPlayer);
+      this.physics.world.overlap(this.player, this.topSurface, victory);
 
-      this.cameras.main.centerOn(this.player.x, this.player.y - 100);
+      if(isWon == false){
+            this.cameras.main.centerOn(this.player.x, this.player.y - 100);
+      }
+      
 
       // Et les rebords
       background.setPosition(screenSize.width / 2, this.cameras.main.scrollY + screenSize.height / 2 + 40);
-      borderRight.setPosition(center + 280, this.cameras.main.scrollY + screenSize.height / 2);
-      borderLeft.setPosition(center - 280, this.cameras.main.scrollY + screenSize.height / 2)
+      if (isWon == false){
+            borderRight.setPosition(center + 280, this.cameras.main.scrollY + screenSize.height / 2);
+            borderLeft.setPosition(center - 280, this.cameras.main.scrollY + screenSize.height / 2)
+      }
+      
 
 
       if (this.player.y - screenSize.height < scoreValue) {
@@ -409,9 +440,10 @@ function update() {
       }
 
       displayCurrentScore();
-
+     
       priseElements.forEach(ele => {
-            if (ele.y > this.cameras.main.scrollY + screenSize.height) {
+
+            if (ele.y > this.cameras.main.scrollY + screenSize.height && stopGenerate == false) {
                   priseGroup.kill(ele);
                   priseLastDead = priseGroup.getFirstDead();
                   let pickWidth = Phaser.Math.Between(0, randomWidth.length - 1);
@@ -420,23 +452,38 @@ function update() {
                   priseLastDead.setTexture('prise', 'Composition 1_00000.png');
                   priseLastDead.setActive(true);
                   priseLastDead.enableBody();
+                  if (ele.y < -6220) {// -TO CHANGE
+                        priseGroup.remove(ele);
+                        stopGenerate = true;
+                  }
             }
+
+            
       });
 
-
+      if(this.player.y + 100 < this.cameras.main.scrollY){
+            this.player.setVelocityY(0);
+            
+      }
+      
       // Update fond de grimpe
-      highElements.forEach(ele => {
-            if (ele.y > this.cameras.main.scrollY + screenSize.height + 1500) {
-                  ele.setPosition(center, ele.y - 3000); // - screenSize.height);
-                  ele.setTexture('surface_classic');
-                  
-                  ele.setTexture(walls[Phaser.Math.Between(0, walls.length - 1)])
-                  console.log("change");
+      highElements.forEach(function (eles){
+            if (eles.y > mainScene.cameras.main.scrollY + screenSize.height + 1500 && isWon == false) {
+                  if (eles.y + 145 - screenSize.height == -4000 && isTheTop == false && isWon == false) { // -3000 = tranche de fin
+                        mainScene.topSurface = mainScene.physics.add.sprite(center, eles.y - 3295, 'topSurface').setSize(600, 150, 300).setOffset(0, 0).setInteractive(); // THERE
+                        eles.setPosition(center, eles.y - 2995); // THERE
+                        eles.setTexture('surface_top');
+                        isTheTop = true;
+                  } else if (isTheTop == false){
+                        eles.setPosition(center, eles.y - 3000); // THERE
+                        eles.setTexture(walls[Phaser.Math.Between(0, walls.length - 1)]);
+                  }                  
             }
+            
       });
 
       this.player.body.velocity.y < 4 && this.player.body.velocity.y > -4 ? isflying = false : isflying = true;
-
+      
 
       if (this.player.body.velocity.y > 600) {
             if (deadSoundProgress == false) {
@@ -469,6 +516,17 @@ priseAte = function (gameObject1, gameObject2) {
             });
       }
 }
+victory = function (gameObject1, gameObject2){
+      if(isWon == false){
+            borderRight.setPosition(center + 280, mainScene.cameras.main.scrollY + 500 + screenSize.height / 2);
+            borderLeft.setPosition(center - 280, mainScene.cameras.main.scrollY + 500 + screenSize.height / 2);
+            gameObject1.setGravityY(-200);
+            gameObject1.setInteractive(false);
+            mainScene.time.delayedCall(1000, showWinScreen, [], this);
+            isWon = true;
+      }
+      
+}
 
 // Pause + Lance les actions sous-jacentes
 hitGlass = function () {
@@ -476,12 +534,12 @@ hitGlass = function () {
             playerConfig.skills.elasticSlime = false;
             bonusGone("elasticSlime");
       }else{
-            globaliseThis.time.delayedCall(100, gameOver, [], this);
+            mainScene.time.delayedCall(100, gameOver, [], this);
       }
 }
 
 gameOver = function gameOver() {
-      globaliseThis.scene.pause();
+      mainScene.scene.pause();
       showDeadMenue();
 }
 
@@ -489,7 +547,7 @@ var timerStart = false;
 
 bonusGone = function cooldownBonusGone(bonus){
       playerConfig.skills[bonus] = false;
-      globaliseThis.time.delayedCall(cooldown * 1000, bonusUp, [bonus], this);
+      mainScene.time.delayedCall(cooldown * 1000, bonusUp, [bonus], this);
       timerStart = true;
 }
 
@@ -500,7 +558,7 @@ bonusUp = function (bonus){
 }
 
 cutPlayer = function cutPlayer(){
-      globaliseThis.time.delayedCall(100, gameOver, [], this); 
+      mainScene.time.delayedCall(100, gameOver, [], this); 
 }
 
 sendCongratMessage = function sendCongratMessage(){
@@ -514,7 +572,7 @@ enemySlime = function enemySlime(){
       // 10 000 = 1 obligé
 
       // this.enemy = this.physics.add.sprite(center, 500, 'enemy').setCircle(100).setOffset(50, 25).setScale(0.2).setInteractive();
-      globaliseThis.time.delayedCall(100, gameOver, [], this)
+      mainScene.time.delayedCall(100, gameOver, [], this)
       // this.enemy.setGravityY(700);
 
 }
