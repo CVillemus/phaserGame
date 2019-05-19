@@ -1,6 +1,10 @@
 body{
       margin: 0;
       font-family: lato;
+      font-size: 18px;
+}
+p{
+      margin: inherit;
 }
 
 .btn{
@@ -8,15 +12,19 @@ body{
       border: 0;
 }
 
-.bestScoreMessage{
-      position: absolute;
+.box--best-score{
       left: 50%;
       transform: translateX(-50%);
       top: 30px;
-      padding: 6px 40px;
-      font-size: 22px;
-      background-color: #FFF;
-      animation: 2s appear ease-in;
+      padding: 10px 17px;
+      border-radius: 17px;
+      color: #FFF;
+      background-color: rgba(47,47,52, .5);
+      animation: 1s appear ease-in;
+}
+
+.tu{
+      text-transform: uppercase;
 }
 
 @keyframes appear{

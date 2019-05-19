@@ -30,7 +30,7 @@ var config = {
       physics: {
             default: 'arcade',
             arcade: {
-                  debug: true,
+                  debug: false,
             }
       },
       scene
@@ -132,14 +132,19 @@ var hitBorderLeft;
 var borderBot; 
 var succesTop; 
 var countHeight = 0;
+let surfaceGroup;
 
 function preload() {
 
       // Loader
       this.load.once('progress', function (progress) { console.log(progress)});
       this.load.on('complete', function () {
-            dom.boxLoader.classList.add("dn");
             mainScene = game.scene.getScene("Game");
+            mainScene.scene.stop('Game');
+            mainScene.scene.start('Game');
+
+            dom.boxLoader.classList.add("dn");
+            
 
       });
 
@@ -168,7 +173,7 @@ function preload() {
 
 
 function create() {
-
+      
       initPlayer();
       initGame();
 
@@ -199,12 +204,12 @@ function create() {
       // Background repeat
       desk = this.add.sprite(center + 200, screenSize.height + 1000, 'desk');
 
-      this.surface1 = this.add.sprite(center, screenSize.height - 1145, 'surface_classic').setOrigin(0.5);
-      this.surface2 = this.add.sprite(center, screenSize.height - 2145, 'surface_classic').setOrigin(0.5);
-      this.surface3 = this.add.sprite(center, screenSize.height - 145, 'surface_bottom').setOrigin(0.5);
+      surfaceGroup = this.physics.add.group();
+      surfaceGroup.create(center, screenSize.height - 1145, 'surface_classic').setOrigin(0.5);
+      surfaceGroup.create(center, screenSize.height - 2145, 'surface_classic').setOrigin(0.5);
+      surfaceGroup.create(center, screenSize.height - 145, 'surface_bottom').setOrigin(0.5);
       
-      highElements.push(this.surface1, this.surface2, this.surface3);
-
+      highElements = surfaceGroup.getChildren();
       // Init songs
       // jump1 = this.sound.add('Jump1');
 
@@ -219,7 +224,7 @@ function create() {
 
       
       this.player = this.physics.add.sprite(center, screenSize.height, 'playerTop', 'Slime_Stall_00000.png').setCircle(50).setOffset(50).setScale(0.9).setBounce(0.9).setInteractive();
-      this.player.setVelocityY(-500);
+      // this.player.setVelocityY(-500);
       
 
       this.physics.add.collider(this.player, borderRight, hitGlass);
@@ -397,6 +402,7 @@ function create() {
 
       }, this);  
 
+
 }
 
 
@@ -476,7 +482,9 @@ function update() {
                         isTheTop = true;
                   } else if (isTheTop == false){
                         eles.setPosition(center, eles.y - 3000); // THERE
-                        eles.setTexture(walls[Phaser.Math.Between(0, walls.length - 1)]);
+                        let randomTexture = walls[Phaser.Math.Between(0, walls.length - 1)];
+                        console.log(randomTexture);
+                        eles.setTexture('surface_classic');
                   }                  
             }
             
@@ -572,7 +580,7 @@ enemySlime = function enemySlime(){
       // 10 000 = 1 obligé
 
       // this.enemy = this.physics.add.sprite(center, 500, 'enemy').setCircle(100).setOffset(50, 25).setScale(0.2).setInteractive();
-      mainScene.time.delayedCall(100, gameOver, [], this)
+      // mainScene.time.delayedCall(100, gameOver, [], this)
       // this.enemy.setGravityY(700);
 
 }
