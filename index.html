@@ -1,63 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <title>Game - A Slimy Escape</title>
-      <meta name="title" content="Cascou grimpeur" />
+      <link rel="icon" href="custom/images/favicon.png" type="image/png">
+      <link rel="icon" sizes="32x32" href="favicon-32.png" type="image/png">
+      <title>Home - A Slimy Escape</title>
+      <meta name="title" content="Home - A Slimy Escape"/>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" type="text/css" media="screen" href="main.css">
-      <script src="phaser.min.js"></script>
-      
 </head>
 <body>
-      <!-- <div class="cooldown">
-            <span id="cooldownBox1" class="btn btn--cd btn--cdone">10</span>
-            <span id="cooldownBox2" class="btn btn--cd btn--cdtwo">10</span>
-      </div> -->
-
-      <div id="newBestScoreBox" class="box box--best-score tu">
-            <p>Nouveau reccord !</p>
-      </div>
-
-      <div id="boxLoader" class="box box--loader box--center">
-            <p>C'est moche, c'est normal ça a pas chargé et j'ai encore rien designer pour ce loader. Donc c'est moche.</p>
-      </div>
-      
-      <div data-type='box' class="box box--onboarding box--center">
-            <h2>Salut DWM !</h2>
-            <p>Pour <b>déplacer le slime</b>, drag le slime vers le bas de manière à charger un saut et relâche la pression.</p>
-            <p>Les bouts de slime sont des prises, <b>pour t'agriper</b>, appuie dessus quand ton slime la survolera, surtout ne relâche pas le doigt avant de charger ton prochain saut.</p>
-            <p>Have fun - N'oubliez pas que le projet est encore en développement et est <b>optimisé pour mobile.</b></p>
-            <div class="tac">
-                  <button data-action-box='play' class="btn btn--prev">Fermer</button>
+      <main class="index">
+            <div class="ctn">
+                  <h1 class="index__title"><img src="custom/images/logo_wide.png" alt="">Slimy Escape</h1>
+                  <div class="index__content">
+                        <div class="col-left">
+                              <div>
+                                    <h2 class="title title--insane font-light">Sauvez le Slime</h2>
+                                    <p class="index__subtitle font-lightgreen">Des mains du scientifique fou !</p>
+                                    <div class="font-secondary font-light">
+                                          <p>Vous vous réveillez dans la peau d’un slime, une petite matière visqueuse animée par une vie d’une origine inconnue. Enfermé dans un incubateur, démennez vous pour obtenir votre liberté en atteignant le sommet.</p>
+                                          <p>Vous savez ce qu’il vous reste à faire !</p>
+                                    </div>
+                              </div>
+                        </div>
+                        <div class="col-right">
+                              <a href="game.html"><img src="custom/images/btn-play.png" alt="bouton jouer" /></a>
+                        </div>
+                  </div>
             </div>
-      </div>
-      <div class="btn btn--score">
-            <span class="btn--scoreH" id="scoreBox">0</span>
-            <span class="btn--scoreP" id="slimeCountContainer">0</span>
-      </div>
-      <button id="buttonGamePause" class="btn btn--pause">Pause</button>
-      <div data-type='box' class="box box--center box--lose dn" id="loseBox">
-            <h2>You lose !</h2>
-            <!-- <p>You died from: <span id="containerDeadOrigin"></span></p> -->
-            <p>Score:<span id="containerActualScore">1</span></p>
-            <p>Best:<span id="containerBestScore">1</span><span class="txt-best-score" id="containerBestScoreMessage"></span></p>
-            <p>SlimePart won:<span id="slimePartWon">0</span></p>
-            <p>Total SlimePart:<span id="totalSlimePartWon">0</span></p>
-            <div class="tac">
-                  <button data-action-box='retry' class="btn btn--restart">Restart</button>
-            </div>
-      </div>
-
-      <div data-type='box' class="box box--center box--lose dn" id="winBox">
-            <h3>Félicitation !</h3>
-            <p>Votre slime s'est échappé de l'incubateur !</p>
-            <div class="tac">
-                  <button data-action-box='retry' class="btn btn--restart">Restart</button>
-            </div>
-      </div>
-      <script src="script.js"></script>
-      <script src="game.js"></script>
+      </main>
 </body>
 </html>

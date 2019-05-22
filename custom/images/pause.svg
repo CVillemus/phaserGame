@@ -1,11 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 181.7 207.3" style="enable-background:new 0 0 181.7 207.3;" xml:space="preserve">
-<g>
-	<path style="fill:#39B54A;" d="M30.8,207.3L30.8,207.3c-17,0-30.8-13.8-30.8-30.8L0,30.8C0,13.8,13.8,0,30.8,0h0
-		c17,0,30.8,13.8,30.8,30.8v72.9v72.9C61.6,193.5,47.8,207.3,30.8,207.3z"/>
-	<path style="fill:#39B54A;" d="M150.9,207.3L150.9,207.3c-17,0-30.8-13.8-30.8-30.8V30.8c0-17,13.8-30.8,30.8-30.8h0
-		c17,0,30.8,13.8,30.8,30.8v145.7C181.7,193.5,167.9,207.3,150.9,207.3z"/>
-</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="29px" height="31px" viewBox="0 0 29 31" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.4 (67378) - http://www.bohemiancoding.com/sketch -->
+    <title>pause</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="iPhone-8-Copy-14" transform="translate(-297.000000, -576.000000)" fill="#FFFFFF">
+            <g id="Group" transform="translate(297.000000, 576.000000)">
+                <g id="pause">
+                    <path d="M5,31 C2.24025974,31 0,28.9363242 0,26.3941148 L0,4.60588519 C0,2.06367583 2.24025974,0 5,0 C7.75974026,0 10,2.06367583 10,4.60588519 L10,15.5074771 L10,26.409069 C10,28.9363242 7.75974026,31 5,31 Z" id="Path"></path>
+                    <path d="M24,31 C21.2402597,31 19,28.9363242 19,26.3941148 L19,4.60588519 C19,2.06367583 21.2402597,0 24,0 C26.7597403,0 29,2.06367583 29,4.60588519 L29,26.3941148 C29,28.9363242 26.7597403,31 24,31 Z" id="Path"></path>
+                </g>
+            </g>
+        </g>
+    </g>
 </svg>

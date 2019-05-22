@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <title>Game - A Slimy Escape</title>
+      <meta name="title" content="Cascou grimpeur" />
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+      
+</head>
+<body>
+
+      
+      <nav class="">
+            <!-- MAIN NAV -->
+            <div class="nav-main font-light">
+                  <div class="container nav-main__content">
+                        <button data-link="pause"><img src="custom/images/icon_menu_white.svg" alt="menu"></button>
+                        <h2 class="title title--up title--big">Menu</h2>
+                        <button data-link="game"><img src="custom/images/icon_play_white.svg" alt="play"></button>
+                  </div>
+            </div>
+
+            <!-- SOUS NAV -->
+            <div class="nav-sub dn">
+                  <div class="container">
+                        <div class="nav-sub__skills">
+                              <div class="skillbox skillbox__first skillbox__first--green-splash">
+
+                              </div>
+                              <div class="skillbox skillbox__second skillbox__second--green-strong">
+
+                              </div>
+                        </div>
+                        <div class="slime-parts">
+                              <span class="font-light slime-parts__count">444</span>
+                              <img src="custom/images/icon_slime-part.svg" alt="mes morceaux de slime">
+                        </div>
+                  </div>
+            </div>
+      </nav>
+
+      <section class="page page-menu" data-section="menu" id="menu">
+            <h1 class="container page-menu__title">Slimy Escape</h1>
+            <ul class="container page-menu__links font-light">
+                  <li><button data-link="game" class="title menu-links menu-links--play">Jouer</button></li>
+                  <li><button data-link="shop" class="title menu-links menu-links--skills">Skills</button></li>
+                  <li><button data-link="tuto" class="title menu-links menu-links--tuto">Tuto</button></li>
+            </ul>
+      </section>
+
+      
+      <section class="page page--full page-victoire dn" data-section="victoire" id="victoire">
+            <div class="container font-light page-victoire__content">
+                  <h3 class="title title--big tac">Félicitation !</h3>
+                  <p class="title font-lightgreen title tac">T'es libre !</p>
+                  <div class="page-victoire__texts font-secondary">
+                        <p>Ton slime va pouvoir mener une vie de slime libre grâce à toi, tu peux être fier.</p>
+                        <p>Aller, les yeux bandés maintenant !</p>
+                  </div>
+                  <ul class="container page-menu__links page-menu__links--green font-green">
+                        <li><button data-link="game" class="title menu-links menu-links--play-green">Jouer</button></li>
+                  </ul>
+            </div>
+      </section>
+
+      <section class="page page--full page-victoire dn" data-section="defaite" id="defaite">
+            <div class="container font-light page-victoire__content">
+                  <h3 class="title title--big tac">T'es mort !</h3>
+                  <p class="title font-lightgreen title tac">Tranché par le dark slime</p>
+                  <div class="page-victoire__texts font-secondary">
+                        <p>Tu veux pas relire le tutoriel un coup ? Ma grand mère a réussit ce jeux, avec ses pieds, deux fois, les yeux bandés, sans écran.</p>
+                  </div>
+                  <ul class="container page-menu__links page-menu__links--green font-green">
+                        <li><button data-link="game" class="title menu-links menu-links--play-green">Jouer</button></li>
+                  </ul>
+            </div>
+      </section>
+
+
+
+
+      
+      <section class="page page-onboarding dn" data-section="tuto" id="tuto">
+            <div class="container page-onboarding__bloc">
+                  <h3 class="onboarding-bloc__title title title--medium">Bienvenue !</h3>
+                  <img class="onboarding-bloc__image" src="#" alt="aide">
+                  <p class="onboarding-bloc__text font-secondary font-secondary--small">Vous vous retrouvez incarner dans la peau d’un slime créer lors d’expériences douteuses. Vous devez vite vous échapper
+                  tant que vous êtes seul ! Grimpez jusqu’au sommet de l’incubateur pour vous enfuir ! Dépechez vous !</p>
+            </div>
+            <div class="page-onboarding__nav font-light container">
+                  <button>Previous</button>
+                  <button><span class="font-green">1</span>/4</button>
+                  <button>Next</button>
+            </div>
+      </section>
+
+      <section class="page page-shop page--spaced dn" data-section="shop" id="shop">
+            <div class="container">
+                  <h3 class="title page-shop__title font-light">Aptitude principale</h3>
+                  <ul class="page-shop__skills">
+                        <li class="skills__el">
+                              <div class="skillbox skillbox--big skillbox__first skillbox__second--white-strong"></div>
+                              <p class="title skill-name skill-name--principale">Force</p>
+                              <div class="slime-parts">
+                                    <button class="font-light">Équiper</button>
+                              </div>
+                        </li>
+                        <li class="skills__el skill-name">
+                              <div class="skillbox skillbox--big skillbox__first skillbox__second--white-strong"></div>
+                              <p class="title skill-name skill-name--principale">Force</p>
+                              <div class="slime-parts">
+                                    <button class="font-light">Déséquiper</button>
+                              </div>
+                        </li>
+                  </ul>
+            </div>
+            <div class="container">
+                  <h3 class="title page-shop__title font-light">Aptitude secondaire</h3>
+                  <ul class="page-shop__skills">
+                        <li class="skills__el">
+                              <div class="skillbox skillbox--big skillbox__first skillbox__second--white-strong"></div>
+                              <p class="title skill-name skill-name--secondaire">Force</p>
+                              <button class="slime-parts">
+                                    <span class="font-light slime-parts__count">150</span>
+                                    <img src="custom/images/icon_slime-part.svg" alt="mes morceaux de slime">
+                              </button>
+                        </li>
+                        <li class="skills__el">
+                              <div class="skillbox skillbox--big skillbox__first skillbox__second--white-strong"></div>
+                              <p class="title skill-name skill-name--secondaire">Force</p>
+                              <button class="slime-parts">
+                                    <span class="font-light slime-parts__count">150</span>
+                                    <img src="custom/images/icon_slime-part.svg" alt="mes morceaux de slime">
+                              </button>
+                        </li>
+                        <li class="skills__el">
+                              <div class="skillbox skillbox--big skillbox__first skillbox__second--white-strong"></div>
+                              <p class="title skill-name skill-name--secondaire">Rebond</p>
+                              <button class="slime-parts">
+                                    <span class="font-light slime-parts__count">150</span>
+                                    <img src="custom/images/icon_slime-part.svg" alt="mes morceaux de slime">
+                              </button>
+                        </li>
+                  </ul>
+            </div>
+            
+      </section>
+
+      <section class="page page-pause dn" data-section="pause" id="pause">
+            <div class="container">
+                  <h3 class="title page-pause__title font-light">Actuel</h3>
+                  <ul class="page-pause__skills">
+                        <li class="skills__el">
+                              <div class="skillbox skillbox--big skillbox__first skillbox__first--slime"></div>
+                              <p class="title skill-name skill-name--actual">Morceaux</p>
+                              <div class="slime-parts">
+                                    <span class="font-light slime-parts__count">150</span>
+                              </div>
+                        </li>
+                        <li class="skills__el skill-name">
+                              <div class="skillbox skillbox--big skillbox__first skillbox__first--height"></div>
+                              <p class="title skill-name skill-name--actual">Hauteur</p>
+                              <div class="slime-parts">
+                                    <span class="font-light slime-parts__count">1025</span>
+                              </div>
+                        </li>
+                  </ul>
+            </div>
+            <div class="container">
+                  <h3 class="title page-pause__title font-light">Best</h3>
+                  <ul class="page-pause__skills">
+                        <li class="skills__el">
+                              <div class="skillbox skillbox--big skillbox__first skillbox__first--b-slime"></div>
+                              <p class="title skill-name skill-name--total">Morceaux</p>
+                              <div class="slime-parts">
+                                    <span class="font-light slime-parts__count">560</span>
+                              </div>
+                        </li>
+                        <li class="skills__el">
+                              <div class="skillbox skillbox--big skillbox__first skillbox__first--b-height"></div>
+                              <p class="title skill-name skill-name--best">Hauteur</p>
+                              <div class="slime-parts">
+                                    <span class="font-light slime-parts__count">3055</span>
+                              </div>
+                        </li>
+                  </ul>
+            </div>
+            
+      </section>
+
+      
+      <div data-action='pause' data-link="pause" class="btn--pause btn--paused dn">
+            Toggle pause
+      </div>
+
+      <section data-section="game" id="game" class="page-game dn">
+
+            <div id="newBestScoreBox" class="box box--best-score tu dn">
+                  <p>Nouveau best score !</p>
+            </div>
+
+            <div class="container">
+                  <div class="page-game__count">
+                        <div class="game-slime-count">
+                              <div class="game-count__image game-count__image--slime"></div>
+                              <div class="game-count__count slime-parts">
+                                    <span class="slime-parts__count">560</span>
+                              </div>
+                        </div>
+                        <div>
+                              <div class="game-count__image game-count__image--height"></div>
+                              <div class="game-count__count slime-parts">
+                                    <span class="slime-parts__count">560</span>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="page-game__cooldown">
+                        <div class="cooldown-box">
+                              <div id="cooldownBox1" class="page-game__skillbox">
+                                    <img class="game-skillbox game-skillbox--1" src="custom/images/skill_box_strong.svg" alt="box_strong">
+                              </div>
+                              <div id="cooldownBox2" class="page-game__skillbox">
+                                    <img class="game-skillbox game-skillbox--2" src="custom/images/skill_box_strong.svg" alt="box_strong">
+                              </div>
+                        </div>
+                  </div>
+
+                  <div id="buttonGamePause" data-link="pause" data-action='pause' class="btn--pause">
+                        Toggle pause
+                  </div>
+            </div>
+      </section>
+
+
+
+
+      <div>
+            <div class="dn" id="scoreBox">0</div>
+            <div class="dn" id="slimeCountContainer">0</div>
+      </div>
+                  
+
+      <section class="box box--center box--lose dn" id="loseBox">
+            <h3>You lose !</h3>
+            <p>Score:<span id="containerActualScore">1</span></p>
+            <p>Best:<span id="containerBestScore">1</span><span class="txt-best-score" id="containerBestScoreMessage"></span></p>
+            <p>SlimePart won:<span id="slimePartWon">0</span></p>
+            <p>Total SlimePart:<span id="totalSlimePartWon">0</span></p>
+            <div class="tac">
+                  <button data-action-box='retry' data-link="pause" class="btn btn--restart" data-link="game">Restart</button>
+            </div>
+      </section>
+
+
+      <script src="phaser.min.js"></script>
+      <script src="game.js"></script>
+</body>
+</html>

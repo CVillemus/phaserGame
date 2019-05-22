@@ -1,10 +1,163 @@
 
+
+var dom = {
+      loseBox: document.getElementById("loseBox"),
+      winBox: document.getElementById("winBox"),
+
+      deadOrigin: document.getElementById("containerDeadOrigin"),
+      actualScore: document.getElementById("containerActualScore"),
+      bestScore: document.getElementById("containerBestScore"),
+      bestScoreMessage: document.getElementById("containerBestScoreMessage"),
+      pause: document.querySelectorAll("[data-action='pause']"),
+      actionBtn: document.querySelectorAll("[data-action-box]"),
+      scoreBox: document.getElementById("scoreBox"),
+      // cooldownBox1: document.getElementById("cooldownBox1"),
+      // cooldownBox2: document.getElementById("cooldownBox2"),
+      slimeCount: document.getElementById("slimeCountContainer"),
+      slimePartWon: document.getElementById("slimePartWon"),
+      totalSlimePartWon: document.getElementById("totalSlimePartWon"),
+      newBestScoreBox: document.getElementById("newBestScoreBox"),
+
+      links: document.querySelectorAll("[data-link]"),
+}
+
+let isPause = false;
+let slimePart = 0;
+
+let scoreBoard;
+let scoreValue;
+
+for (let index = 0; index < dom.links.length; index++) {
+      dom.links[index].addEventListener("click", changeActive);
+}
+
+
+function changeActive(){
+      let parent = this.closest("[data-section]");
+      parent.classList.add("dn");
+      let newParentName = this.getAttribute("data-link");
+      let newParent = document.getElementById(newParentName);
+      newParent.classList.remove('dn');    
+}
+
+for (let index = 0; index < dom.actionBtn.length; index++) {
+      dom.actionBtn[index].addEventListener("click", restartGame)
+}
+
+for (let index = 0; index < dom.pause.length; index++) {
+      dom.pause[index].addEventListener('click', togglePause);
+}
+
+function togglePause() {
+      if (isPause) {
+            mainScene.scene.resume();
+            dom.pause.innerHTML = "Pause";
+            isPause = false;
+      } else {
+            mainScene.scene.pause();
+            dom.pause.innerHTML = "Play";
+            isPause = true;
+      }
+}
+
+
+
+function updateSlimeCount() {
+      dom.slimeCount.innerHTML = slimePart;
+}
+
+showWinScreen = function () {
+      dom.winBox.classList.remove("dn");
+}
+
+
+
+function updateGlobalSlimeCount() {
+      slimeStorageCount = localStorage.getItem('slimeStorageCount');
+      if (slimeStorageCount == "null") {
+            localStorage.setItem('slimeStorageCount', slimePart);
+      } else {
+            slimeStorageCount = Number(slimeStorageCount);
+            slimeStorageCount += slimePart;
+            localStorage.setItem('slimeStorageCount', slimeStorageCount);
+      }
+}
+
+function appearCongratMessage() {
+      dom.newBestScoreBox.classList.remove("dn");
+      console.log("goes");
+      setTimeout(() => {
+            disapearCongratMessage();
+      }, 3000);
+}
+
+
+disapearCongratMessage = function disapearCongratMessage() {
+      dom.newBestScoreBox.classList.add("dn");
+}
+
+function showDeadMenue() {
+      dom.loseBox.classList.remove("dn");
+      fillDeadMenue();
+}
+
+function showWinMenue() {
+      dom.winBox.classList.remove("dn");
+}
+
+function fillDeadMenue() {
+      updateGlobalSlimeCount();
+      dom.actualScore.innerHTML = scoreBoard;
+      getBestScore();
+      dom.bestScore.innerHTML = bestScore;
+      dom.slimePartWon.innerHTML = slimePart;
+      dom.totalSlimePartWon.innerHTML = slimeStorageCount;
+}
+
+var bestScore = localStorage.getItem('bestScore');
+
+function getBestScore() {
+      if (bestScore == "null") {
+            localStorage.setItem('bestScore', scoreBoard);
+      }
+      if (bestScore < scoreBoard) {
+            localStorage.setItem('bestScore', scoreBoard);
+            bestScore = scoreBoard;
+            showNewBestScore();
+      }
+}
+
+function displayCurrentScore() {
+      dom.scoreBox.innerHTML = scoreBoard;
+}
+
+function showNewBestScore() {
+      dom.bestScoreMessage.innerHTML = "Nouveau meilleur score !";
+}
+
+
+
+function restartGame() {
+      let parentBox = this.closest("[data-type='box']");
+      let actionType = this.getAttribute("data-action-box");
+      parentBox.classList.add("dn");
+      if (actionType == "retry") {
+            mainScene.scene.restart();
+      } else if (actionType == "play") {
+            togglePause();
+      }
+}
+
+
 var screenSize = {
       width: window.innerWidth,
       height: window.innerHeight
 }
 
 window.addEventListener('resize', function(){
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+
       if (isPause == false){
             togglePause();
       }
@@ -14,6 +167,7 @@ window.addEventListener('resize', function(){
       }
       // mainScene.resize(screenSize.width, screenSize.height); 
 })
+
 const scene = new Phaser.Scene("Game");
 scene.preload = preload;
 scene.create = create;
@@ -30,10 +184,10 @@ var config = {
       physics: {
             default: 'arcade',
             arcade: {
-                  debug: false,
+                  debug: true,
             }
       },
-      scene
+      scene,
 };
 
 
@@ -117,7 +271,7 @@ function initPlayer() {
 
 const walls = ['surface_broken', 'surface_caution', 'surface_classic', 'surface_dead', 'surface_paint'];
 
-let highElements = [];
+let highElements;
 
 // Bonus CD
 const cooldown = 10;
@@ -142,10 +296,6 @@ function preload() {
             mainScene = game.scene.getScene("Game");
             mainScene.scene.stop('Game');
             mainScene.scene.start('Game');
-
-            dom.boxLoader.classList.add("dn");
-            
-
       });
 
       // this.load.setPath('assets/sprites/');
@@ -204,7 +354,7 @@ function create() {
       // Background repeat
       desk = this.add.sprite(center + 200, screenSize.height + 1000, 'desk');
 
-      surfaceGroup = this.physics.add.group();
+      surfaceGroup = this.add.group();
       surfaceGroup.create(center, screenSize.height - 1145, 'surface_classic').setOrigin(0.5);
       surfaceGroup.create(center, screenSize.height - 2145, 'surface_classic').setOrigin(0.5);
       surfaceGroup.create(center, screenSize.height - 145, 'surface_bottom').setOrigin(0.5);
@@ -301,7 +451,9 @@ function create() {
       
 
       this.player.on('pointerdown', function (pointer, localX, localY) {
+
             if(isPause == false && isWon == false){
+                  
                   cursorCharDown = true;
 
                   pcx = this.player.x;
@@ -324,7 +476,7 @@ function create() {
                         }
                         d = 0;
                   }
-
+                  
                   if (playerConfig.skills.dobJump && disabDobJump == false) {
                         this.player.body.setVelocityY(-600);
                         this.player.setGravityY(350);
@@ -332,7 +484,7 @@ function create() {
                         // cooldownDobJump = this.time.delayedCall(cooldown * 1000, cooldownBonusUp, ["dobJump"], this);
                         bonusGone("dobJump");
                   }
-
+                  
                   this.input.on('pointermove', function (pointer, currentlyOver) {
                         if (cursorCharDown && disabDobJump == true || cursorCharDown == true && isStick && isPause == false && isWon == false) {
                               lineStr.setTo(pcx, pcy, pointer.worldX, pointer.worldY);
@@ -371,7 +523,7 @@ function create() {
                         //jump direction right
                   }
                   
-
+                  ;
                   d = Phaser.Math.Distance.Between(pcx, pcy, prx, pry);
                   rad = Phaser.Math.Angle.Between(prx, pry, pcx, pcy);
 
@@ -379,11 +531,12 @@ function create() {
                         d = 150;
                   }
                   
+                  
                   playerConfig.skills.superStrenght ? str = d * 5 : str = d * 3;
                   if (isflying == false) {
+                        
                         if (playerConfig.skills.superStrenght) {
                               playerConfig.skills.superStrenght = false;
-                              // cooldownSuperStrenght = this.time.delayedCall(cooldown * 1000, cooldownBonusUp, ["superStrenght"], this);
                               bonusGone("superStrenght");
                         }
 
@@ -392,9 +545,10 @@ function create() {
                         } else {
                               // son selon puissance faible
                         }
-
+                        
                         disabDobJump = false;
                         velocityFromRotation(rad, str, velocity);
+                        
                         this.player.setVelocity(velocity.x, velocity.y);
                   }
             }
@@ -408,7 +562,7 @@ function create() {
 
 function update() {
 
-
+      
       // this.enemy = this.physics.add.sprite(center, 500, 'enemy').setCircle(100).setOffset(50, 25).setScale(0.2).setInteractive();
       // this.enemy.setGravityY(700);
 
@@ -474,6 +628,7 @@ function update() {
       
       // Update fond de grimpe
       highElements.forEach(function (eles){
+            
             if (eles.y > mainScene.cameras.main.scrollY + screenSize.height + 1500 && isWon == false) {
                   if (eles.y + 145 - screenSize.height == -4000 && isTheTop == false && isWon == false) { // -3000 = tranche de fin
                         mainScene.topSurface = mainScene.physics.add.sprite(center, eles.y - 3295, 'topSurface').setSize(600, 150, 300).setOffset(0, 0).setInteractive(); // THERE
@@ -483,7 +638,6 @@ function update() {
                   } else if (isTheTop == false){
                         eles.setPosition(center, eles.y - 3000); // THERE
                         let randomTexture = walls[Phaser.Math.Between(0, walls.length - 1)];
-                        console.log(randomTexture);
                         eles.setTexture('surface_classic');
                   }                  
             }
