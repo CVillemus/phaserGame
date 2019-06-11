@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 354.8994 403.7317">
+  <defs>
+    <linearGradient id="Dégradé_sans_nom_2" data-name="Dégradé sans nom 2" x1="87.6298" y1="159.1179" x2="268.9402" y2="159.1179" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f2f2f2"/>
+      <stop offset="0.0533" stop-color="#f5f5f5" stop-opacity="0.8401"/>
+      <stop offset="0.1184" stop-color="#f8f8f8" stop-opacity="0.6757"/>
+      <stop offset="0.1859" stop-color="#fbfbfb" stop-opacity="0.5395"/>
+      <stop offset="0.2554" stop-color="#fdfdfd" stop-opacity="0.434"/>
+      <stop offset="0.3278" stop-color="#fefefe" stop-opacity="0.359"/>
+      <stop offset="0.4048" stop-color="#fff" stop-opacity="0.3144"/>
+      <stop offset="0.4944" stop-color="#fff" stop-opacity="0.3"/>
+      <stop offset="0.5835" stop-color="#fff" stop-opacity="0.3148"/>
+      <stop offset="0.6622" stop-color="#fefefe" stop-opacity="0.3604"/>
+      <stop offset="0.737" stop-color="#fcfcfc" stop-opacity="0.4369"/>
+      <stop offset="0.8094" stop-color="#fafafa" stop-opacity="0.5446"/>
+      <stop offset="0.88" stop-color="#f8f8f8" stop-opacity="0.6834"/>
+      <stop offset="0.9484" stop-color="#f5f5f5" stop-opacity="0.8511"/>
+      <stop offset="1" stop-color="#f2f2f2"/>
+    </linearGradient>
+    <linearGradient id="Dégradé_sans_nom_14" data-name="Dégradé sans nom 14" x1="177.4497" y1="47.1802" x2="177.4497" y2="11.7314" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f2f2f2" stop-opacity="0"/>
+      <stop offset="0.0163" stop-color="#cecece" stop-opacity="0.0225"/>
+      <stop offset="0.2363" stop-opacity="0.15"/>
+      <stop offset="0.3498" stop-color="#030303" stop-opacity="0.1623"/>
+      <stop offset="0.45" stop-color="#0e0e0e" stop-opacity="0.2001"/>
+      <stop offset="0.5452" stop-color="#202020" stop-opacity="0.2638"/>
+      <stop offset="0.6374" stop-color="#3a3a3a" stop-opacity="0.3532"/>
+      <stop offset="0.7275" stop-color="#5b5b5b" stop-opacity="0.4687"/>
+      <stop offset="0.8159" stop-color="#838383" stop-opacity="0.6104"/>
+      <stop offset="0.9029" stop-color="#b3b3b3" stop-opacity="0.7784"/>
+      <stop offset="0.9869" stop-color="#e9e9e9" stop-opacity="0.9678"/>
+      <stop offset="1" stop-color="#f2f2f2"/>
+    </linearGradient>
+  </defs>
+  <title>incubator</title>
+  <g id="Calque_2" data-name="Calque 2">
+    <g id="Calque_3" data-name="Calque 3">
+      <g>
+        <g>
+          <ellipse cx="177.4497" cy="334.6851" rx="177.4497" ry="69.0466" fill="#3e3d3f"/>
+          <ellipse cx="178.3156" cy="277.4296" rx="93.9869" ry="15.8408" fill="#7f8c8d"/>
+          <g>
+            <g opacity="0.8">
+              <path d="M87.6325,14.7776V283.6812c-.0007.0314-.0027.0628-.0027.0942s.002.0627.0027.0941v.1179h.0035c.5237,10.7728,40.9075,19.4708,90.649,19.4708s90.1253-8.698,90.649-19.4708h.0062V14.7776Z" fill="url(#Dégradé_sans_nom_2)"/>
+            </g>
+            <ellipse cx="178.285" cy="286.4396" rx="83.2548" ry="15.8408" fill="#e0e0e0"/>
+          </g>
+          <g>
+            <path d="M272.427,276.7724v43.825c0,27.4663-188.1043,27.4663-188.1043,0v-43.825C84.3227,298.621,272.427,298.621,272.427,276.7724Z" fill="#bdc3c7"/>
+            <path d="M208.3944,292.9167a30.0442,30.0442,0,1,1-37.3731-29.3211,26.1507,26.1507,0,0,1,7.3546-.9853,28.7156,28.7156,0,0,1,7.6547,1.0609A30.0558,30.0558,0,0,1,208.3944,292.9167Z" fill="#bdc3c7"/>
+            <path d="M192.8443,286.07A14.4818,14.4818,0,1,1,174.83,271.9369a12.6019,12.6019,0,0,1,3.545-.4749,13.8428,13.8428,0,0,1,3.69.5113A14.4875,14.4875,0,0,1,192.8443,286.07Z" fill="#e6e7e8"/>
+            <path d="M182.0645,271.9729l-.1807,10.5178a3.63,3.63,0,0,1-3.6176,3.5791h-.0725a3.6483,3.6483,0,0,1-3.545-3.7251l.1807-10.4086a12.6019,12.6019,0,0,1,3.545-.4749A13.8763,13.8763,0,0,1,182.0645,271.9729Z" fill="#7f8c8d"/>
+            <ellipse cx="113.7538" cy="314.0011" rx="7.2347" ry="7.3041" fill="#e64c3c"/>
+            <ellipse cx="142.3195" cy="318.1477" rx="7.2347" ry="7.3041" fill="#4482c3"/>
+          </g>
+          <path d="M327.6752,341.7592l-7.6273,5.32-49.6134-21.54-7.6376-25.06,7.6376-5.2776C294.6736,300.4785,312.5551,320.9252,327.6752,341.7592Z" fill="#e0e0e0"/>
+          <path d="M319.9545,347.0394l-57.2406-16.2206V300.4809C286.9529,305.7588,304.8345,326.2055,319.9545,347.0394Z" fill="#7f8c8d"/>
+          <path d="M28.6043,341.7592l7.6272,5.32,49.6134-21.54,7.6376-25.06-7.6376-5.2776C61.6059,300.4785,43.7243,320.9252,28.6043,341.7592Z" fill="#e0e0e0"/>
+          <path d="M36.3249,347.0394l57.2406-16.2206V300.4809C69.3265,305.7588,51.445,326.2055,36.3249,347.0394Z" fill="#7f8c8d"/>
+          <path d="M268.1035,43.3744V12.3075c-13.9746,2.227-48.7051,3.8047-89.3462,3.8047-40.9629,0-75.9223-1.6026-89.6748-3.8579H86.7959V42.8592C110.8853,48.4432,237.6919,48.6151,268.1035,43.3744Z" fill="url(#Dégradé_sans_nom_14)"/>
+        </g>
+        <g>
+          <path d="M178.7962,11.999c52.961,0,95.8973,1.0344,95.9242,2.3107V2.4276c0-3.2368-191.834-3.2368-191.834,0V14.2724C83.74,13.0133,126.3524,11.999,178.7962,11.999Z" fill="#7c7c7c"/>
+          <path d="M244.282,88.9772l-6.8248.7334,7.1794-51.4253,21.08-13.3888,6.7891,5.754C267.4709,54.252,257.83,69.658,244.282,88.9772Z" fill="#e0e0e0"/>
+          <path d="M237.47,89.6142l.3546-57.1591L265.6932,24.82C261.1487,48.6616,252.1068,70.355,237.47,89.6142Z" fill="#7f8c8d"/>
+          <path d="M113.8423,88.9772l6.8248.7334-7.18-51.4253-21.08-13.3888-6.7891,5.754C90.6534,54.252,100.2943,69.658,113.8423,88.9772Z" fill="#e0e0e0"/>
+          <path d="M120.6548,89.6142,120.3,32.4551,92.431,24.82C96.9755,48.6616,106.0174,70.355,120.6548,89.6142Z" fill="#7f8c8d"/>
+          <g>
+            <path d="M274.7206,2.1968v-.02h-.0061Z" fill="#ccc"/>
+            <path d="M82.907,2.1768h-.02v.1167A.4.4,0,0,1,82.907,2.1768Z" fill="#ccc"/>
+            <path d="M178.8108,8.2827C125.85,8.2827,82.9135,5.6043,82.8866,2.3V33.0657c0,8.3808,191.834,8.3808,191.834,0V2.3963C273.8671,5.6564,231.2546,8.2827,178.8108,8.2827Z" fill="#ccc"/>
+          </g>
+        </g>
+      </g>
+      <circle cx="178.7798" cy="205.8631" r="21.305" fill="#06f266"/>
+      <circle cx="232.8582" cy="130.5975" r="6.9176" fill="#65ff00"/>
+      <circle cx="119.5602" cy="143.9784" r="6.9176" fill="#65ff00"/>
+      <circle cx="163.6826" cy="85.4028" r="5.0729" fill="#65ff00"/>
+    </g>
+  </g>
+</svg>

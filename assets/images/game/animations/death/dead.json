@@ -1,0 +1,209 @@
+{
+	"textures": [
+		{
+			"image": "dead.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 490,
+				"h": 235
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "death_00007.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 180,
+						"h": 180
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 16,
+						"w": 150,
+						"h": 150
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 150,
+						"h": 150
+					}
+				},
+				{
+					"filename": "death_00006.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 180,
+						"h": 180
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 26,
+						"w": 128,
+						"h": 127
+					},
+					"frame": {
+						"x": 153,
+						"y": 1,
+						"w": 128,
+						"h": 127
+					}
+				},
+				{
+					"filename": "death_00000.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 180,
+						"h": 180
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 29,
+						"w": 122,
+						"h": 122
+					},
+					"frame": {
+						"x": 283,
+						"y": 1,
+						"w": 122,
+						"h": 122
+					}
+				},
+				{
+					"filename": "death_00004.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 180,
+						"h": 180
+					},
+					"spriteSourceSize": {
+						"x": 50,
+						"y": 45,
+						"w": 82,
+						"h": 88
+					},
+					"frame": {
+						"x": 407,
+						"y": 1,
+						"w": 82,
+						"h": 88
+					}
+				},
+				{
+					"filename": "death_00001.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 180,
+						"h": 180
+					},
+					"spriteSourceSize": {
+						"x": 38,
+						"y": 37,
+						"w": 104,
+						"h": 104
+					},
+					"frame": {
+						"x": 153,
+						"y": 130,
+						"w": 104,
+						"h": 104
+					}
+				},
+				{
+					"filename": "death_00003.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 180,
+						"h": 180
+					},
+					"spriteSourceSize": {
+						"x": 59,
+						"y": 56,
+						"w": 60,
+						"h": 69
+					},
+					"frame": {
+						"x": 1,
+						"y": 153,
+						"w": 60,
+						"h": 69
+					}
+				},
+				{
+					"filename": "death_00002.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 180,
+						"h": 180
+					},
+					"spriteSourceSize": {
+						"x": 49,
+						"y": 47,
+						"w": 83,
+						"h": 86
+					},
+					"frame": {
+						"x": 259,
+						"y": 130,
+						"w": 83,
+						"h": 86
+					}
+				},
+				{
+					"filename": "death_00005.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 180,
+						"h": 180
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 35,
+						"w": 105,
+						"h": 107
+					},
+					"frame": {
+						"x": 344,
+						"y": 125,
+						"w": 105,
+						"h": 107
+					}
+				},
+				{
+					"filename": "death_00008.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 180,
+						"h": 180
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 283,
+						"y": 125,
+						"w": 3,
+						"h": 3
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:30c8a5c8fb1715b541060d6bc8e5be46:655de4eb34563999a3360df04a947e62:6525ed62030b51131fca56775fe5741d$"
+	}
+}
